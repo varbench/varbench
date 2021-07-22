@@ -1,4 +1,4 @@
-#Lattice naming conventions
+# Lattice naming conventions
 
 Models specified on lattices follow a simple naming convention to specify the geometry.
 Each lattice name contains information about its geometry, extent, and boundary conditions.
