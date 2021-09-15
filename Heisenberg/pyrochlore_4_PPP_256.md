@@ -1,3 +1,3 @@
 |       Energy          |  Sigma          | Energy Variance  |  Method                                                          | Data repository                     |
 | ----------------------| ----------------| -----------------|------------------------------------------------------------------|------------------------------------ |
-|    -1.9324            |  3e-4           | 1.3e-3           | mVMC with SU(2) and symmetry projections                         | pyrochlore/mVMC256                  |
+|    -494.6944          |  0.076           | 0.3328           | mVMC with SU(2) and symmetry projections                         | pyrochlore/mVMC256                  |
