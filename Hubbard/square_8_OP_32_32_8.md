@@ -1,4 +1,4 @@
 | Energy                | Sigma           | Energy Variance  | Method                                                           | Data Repository                     |
 |-----------------------|-----------------|------------------|------------------------------------------------------------------|-------------------------------------|
-| -31.995      | 0.01745               |                 | DMRG (max truncation error ~ 3.0E-5, max bond dimension ~10500 )                           |
+| -31.995      | 0.01745               |                 | DMRG (max truncation error ~ 3.0E-5, max bond dimension ~10900 )                           |
 
