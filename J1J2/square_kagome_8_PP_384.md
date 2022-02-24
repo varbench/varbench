@@ -1,3 +1,3 @@
 |       Energy          |  Sigma          | Energy Variance  |  Method                                                          | Data repository                     |
 | ----------------------| ----------------| -----------------|------------------------------------------------------------------|------------------------------------ |
-|    -671.43           |  0.1536          | 0.10             | mVMC with SU(2) and point group projection                       | SKL/mVMC384                         |
+|    -671.43           |  0.1536          | 46.96             | mVMC with SU(2) and point group projection                       | SKL/mVMC384                         |
