@@ -1,3 +1,3 @@
-|       Energy          |  Sigma          | Energy Variance  |  Method                                                |
-| ----------------------| ----------------| -----------------|--------------------------------------------------------|
-|    -252.007           |  0.021          | 9.99             | mVMC (PP + RBM + 1st step Lanczos)                     |
+|       Energy          |  Sigma          | Energy Variance  |  Method                                                |   Data repository      |
+| ----------------------| ----------------| -----------------|--------------------------------------------------------|------------------------|
+|    -252.007           |  0.021          | 9.99             | mVMC (PP + RBM + 1st step Lanczos, spin-parity projection, C3 point-group projection)                     |                        |
