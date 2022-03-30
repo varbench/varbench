@@ -1,4 +1,4 @@
 
 |       Energy          |  Sigma          | Energy Variance  |  Method                                                          | Data repository                |
 | ----------------------| ----------------| -----------------|------------------------------------------------------------------|------------------------------- |
-|       -192.0004       |                 |        2.256     |   DMRG(MaxLinkDim = 10000, MaxTruncErr~2.62E-05, extrap energy |                                                           | 
+|            |                 |            |   DMRG(MaxLinkDim = 10000, MaxTruncErr~2.62E-05, extrap energy |                                                           | 
