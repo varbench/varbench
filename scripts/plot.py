@@ -4,7 +4,11 @@ from matplotlib import pyplot as plt
 
 from collect import data_key, get_data, get_ham_idx
 
-out_filename = "./varbench.png"
+plt.rcParams["font.family"] = "serif"
+plt.rcParams["font.serif"] = "STIX"
+plt.rcParams["mathtext.fontset"] = "stix"
+
+out_filename = "./varbench.pdf"
 
 
 def main():
@@ -28,7 +32,7 @@ def main():
     fig, ax = plt.subplots(figsize=(12, 12))
 
     for idx in range(max(idxs) + 1):
-        _data = [row for row in data if row[0] == idx]
+        _data = [row for row in data if row[0] == idx and row[2] > 1e-5]
         _data = list(zip(*_data))
         ax.scatter(
             _data[2],
