@@ -4,6 +4,7 @@
 The model is defined on the edges of an arbitrary graph and reads
 $ H = \Gamma \sum_i \sigma^x_i + V \sum_<i,j> \sigma^z_i \sigma^z_j  $
 where we take Pauli matrices $\sigma^{x,y,z}_i$.
+It is assumed that the units of energy are $ V=1 $.
 
 ## Naming
 
@@ -16,5 +17,3 @@ The name of the data files follows the convention `lattice_N_Gamma_V.md`
 `N` is the total number of spins
 
 `Gamma` is the value of the transverse field Gamma
-
-`V` is the value of the interaction

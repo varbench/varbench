@@ -46,6 +46,7 @@ def parse_file(data, file_path, file_values):
                     or values[2] == "0"
                     or "?" in values[2]
                 ):
+                    # print("Skip", values)
                     continue
 
                 values[1] = parse_float(values[1])
