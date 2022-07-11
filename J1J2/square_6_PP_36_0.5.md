@@ -4,3 +4,4 @@
 |  -72.54140   |   0.00009     |   0.1905(3)    |  RBM with momentum (K=0), spin-parity (even S), and point-group (A1) projections, 72 hidden units (Method Ref: J. Phys.: Condens. Matter 33, 174003 (2021))  |    |
 |    -72.167            |   0.003         |  5.42           |  VMC with projected BCS (Z2 spin liquid)	                                   |                                     |
 | -71.79509597740149    |                 | 4.642480004386925 | DMRG (bond dimension = 256)                                     |                                     |
+| -69.9507              | 0.0038          | 14.7332          | RBM (alpha = 1)                                                  |                                     |

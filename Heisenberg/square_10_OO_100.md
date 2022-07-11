@@ -9,3 +9,4 @@
 | -250.3460             | 0.0041          | 16.83691         | 1D MPS-RNN (bond dimension = 40), arXiv:2206.12363               |                                     |
 | -251.0788             | 0.0022          | 4.928276         | 2D MPS-RNN (bond dimension = 40), arXiv:2206.12363               |                                     |
 | -251.4112             | 0.0015          | 2.289447         | Tensor-RNN (bond dimension = 40), arXiv:2206.12363               |                                     |
+| -248.367              | 0.0059          | 35.6700          | RBM (alpha = 1)                                                  |                                     |
