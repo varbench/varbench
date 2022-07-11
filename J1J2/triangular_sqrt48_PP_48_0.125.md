@@ -1,3 +1,3 @@
 | Energy             | Sigma           | Energy Variance  | Method                                                        | Data Repository                     |
 |--------------------|-----------------|------------------|---------------------------------------------------------------|-------------------------------------|
-| -24.8310932848     | 1e-10           |                  | Exact Diagonalization (not published)                         |                                     |
+| -99.3243731392     | 4e-10           |                  | Exact Diagonalization (not published)                         |                                     |
