@@ -1,0 +1,4 @@
+|       Energy          |  Sigma          | Energy Variance  |  Method                                                          | Data repository                |
+| ----------------------| ----------------| -----------------|------------------------------------------------------------------|------------------------------- |
+|     -23.5645           |                 |     0.0155        |   DMRG(MaxLinkDim = 12000, MaxTruncErr~6.6E-06, extrap energy -23.5658 +/- 0.0003) |                                                           |
+|     -23.520            |     0.001       |   0.035(4)        |   VMC Hiden Fermion Determinant State Ansatz (N_hidden = 16. Single hidden layer fully connected net with alpha = 14) | https://arxiv.org/abs/2111.10420 |
