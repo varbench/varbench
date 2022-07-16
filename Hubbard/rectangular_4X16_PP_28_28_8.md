@@ -1,0 +1,3 @@
+|       Energy          |  Sigma          | Energy Variance  |  Method                                                          | Data repository                |
+| ----------------------| ----------------| -----------------|------------------------------------------------------------------|------------------------------- |
+|   -48.192             |    0.003        |     0.44(1)      | VMC Hiden Fermion Determinant State Ansatz (N_hidden = 16. Single hidden layer fully connected net with alpha = 6) | https://arxiv.org/abs/2111.10420 |
