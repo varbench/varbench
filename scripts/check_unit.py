@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
-import re
-
 from tabulate import tabulate
 
-from collect import data_key, get_data
+from collect import data_key, get_data, get_system_size
 
 
 def main():
@@ -13,17 +11,8 @@ def main():
 
     out = []
     for row in data:
-        match = re.compile(r"[OP]_(\d+)").search(row[1])
-        if not match:
-            print(f"Warning: Failed to parse system size: {row}")
-            continue
-        try:
-            size = int(match.group(1))
-        except ValueError:
-            print(f"Warning: Failed to parse system size: {row}")
-            continue
-
-        energy = row[3] / size
+        N = get_system_size(row[1])
+        energy = row[3] / N
         out.append(row[:2] + (energy, row[2]))
 
     print(tabulate(out, tablefmt="plain"))

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 import os
-from math import isnan, nan, sqrt
+import re
+from math import isnan, nan
 
 from natsort import natsort_key
 from tabulate import tabulate
@@ -75,13 +76,13 @@ def parse_file(data, file_path, ham_attr):
                     continue
                 if energy > 0:
                     warn("Positive energy")
-                    energy *= -1
+                    # energy *= -1
 
                 energy_var = cols[field_indices["energy variance"]]
                 energy_var = parse_float(energy_var)
                 if isnan(energy_var):
                     warn("Failed to parse variance")
-                    continue
+                    # continue
                 if energy_var == 0:
                     # warn("Zero variance")
                     # continue
@@ -90,18 +91,13 @@ def parse_file(data, file_path, ham_attr):
                     warn("Negative variance")
                     # continue
 
-                if energy < 0 and energy_var >= 0:
-                    energy_rel_std = sqrt(energy_var) / abs(energy)
-                else:
-                    energy_rel_std = nan
-
-                data.append(ham_attr + (method, energy, energy_var, energy_rel_std))
+                data.append(ham_attr + (method, energy, energy_var))
 
             else:
                 raise ValueError(f"Unknown state: {state}")
 
 
-# (ham_type, ham_param, method, energy, energy_var, energy_rel_std)
+# (ham_type, ham_param, method, energy, energy_var)
 def get_data():
     data = []
     for _dir in os.scandir(root):
@@ -123,10 +119,8 @@ def get_data():
 def filter_energy_var(data):
     out = []
     for row in data:
-        if row[4] == 0:
-            # print(f"Warning: Zero variance: {row}")
-            continue
-        out.append(row)
+        if row[4] > 0:
+            out.append(row)
     return out
 
 
@@ -136,6 +130,21 @@ def get_ham_idx(s):
 
 def data_key(a):
     return get_ham_idx(a[0]), natsort_key(a[1:])
+
+
+def get_system_size(ham_param):
+    match = re.compile(r"[OP]_(\d+)").search(ham_param)
+    if not match:
+        print(f"Warning: Failed to parse system size: {ham_param}")
+        return nan
+
+    try:
+        size = int(match.group(1))
+    except ValueError:
+        print(f"Warning: Failed to parse system size: {ham_param}")
+        return nan
+
+    return size
 
 
 def main():
