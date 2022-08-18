@@ -1,9 +1,9 @@
 # Heisenberg Model
 
 The model is defined on the edges of an arbitrary graph and reads
-$ H = J \sum_<i,j> \vec{\sigma}_i \cdot \vec{\sigma}_j  $
-where we take Pauli matrices $\sigma^{x,y,z}_i$.
-It is assumed that the units of energy are $ J=1 $.
+$$H = J \sum_{\langle i, j \rangle} \vec\sigma_i \cdot \vec\sigma_j$$
+where we take Pauli matrices $\sigma^{x, y, z}_i$.
+It is assumed that the unit of energy is $J = 1$.
 
 ## Naming
 

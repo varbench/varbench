@@ -1,9 +1,9 @@
 # J1-J2 Model
 
 The model is defined on the edges of an arbitrary graph and reads
-$ H = J_1 \sum_<i,j> \vec{\sigma}_i \cdot \vec{\sigma}_j + J_2 \sum_{<<i,j>>} \vec{\sigma}_i \cdot \vec{\sigma}_j $
-where we take Pauli matrices $\sigma^{x,y,z}_i$ and the sums extend, respectively, to nearest and next-to-nearest neighbors on the given lattice.
-It is assumed that the units of energy are $ J_1=1 $.
+$$H = J_1 \sum_{\langle i, j \rangle} \vec\sigma_i \cdot \vec\sigma_j + J_2 \sum_{\langle\langle i, j \rangle\rangle} \vec\sigma_i \cdot \vec\sigma_j$$
+where we take Pauli matrices $\sigma^{x, y, z}_i$ and the sums extend, respectively, to nearest and next-to-nearest neighbors on the given lattice.
+It is assumed that the unit of energy is $J_1 = 1$.
 
 ## Naming
 
