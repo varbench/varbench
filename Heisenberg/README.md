@@ -1,6 +1,5 @@
 # Heisenberg Model
 
-
 The model is defined on the edges of an arbitrary graph and reads
 $ H = J \sum_<i,j> \vec{\sigma}_i \cdot \vec{\sigma}_j  $
 where we take Pauli matrices $\sigma^{x,y,z}_i$.

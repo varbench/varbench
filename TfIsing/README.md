@@ -1,6 +1,5 @@
 # Transverse-Field Ising Model
 
-
 The model is defined on the edges of an arbitrary graph and reads
 $ H = \Gamma \sum_i \sigma^x_i + V \sum_<i,j> \sigma^z_i \sigma^z_j  $
 where we take Pauli matrices $\sigma^{x,y,z}_i$.

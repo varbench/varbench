@@ -1,9 +1,8 @@
 # Hubbard Model
 
-
 The model is defined on the edges of an arbitrary graph and reads
 $ H = -t \sum_{<i,j>,{\sigma}} \left ( c^{\dagger}_{i,\sigma} c^_{j,\sigma} + c^{\dagger}_{j,\sigma} c^_{i,\sigma} \right )  + U \sum_{i} n_{i,\uparrow} n_{i,\downarrow}  $,
-where $c_{i,\sigma}$ are fermionic annihiliation operators.   
+where $c_{i,\sigma}$ are fermionic annihiliation operators.
 It is assumed that the units of energy are $ t=1 $.
 
 ## Naming

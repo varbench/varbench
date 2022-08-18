@@ -9,12 +9,11 @@ Each lattice name contains information about its geometry, extent, and boundary 
 
 `square_12_PP` is a 2d square lattice 12x12 with periodic boundaries in both directions
 
-`square_12_AP` is a 2d square lattice 12x12 with antiperiodic and periodic boundary conditions in the x and y directions, respectively 
+`square_12_AP` is a 2d square lattice 12x12 with antiperiodic and periodic boundary conditions in the x and y directions, respectively
 
 `rectangular_4x30_PO` is a rectangular lattice with periodic boundaries along the short side and open boundaries along the long side
 
 `cubic_10_PPP` is a cubic lattice with periodic boundaries along all directions, etc...).
-
 
 ### TODO
 
