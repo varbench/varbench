@@ -116,6 +116,37 @@ def get_data():
     return data
 
 
+def get_ham_idx(ham_type):
+    return ham_types.index(ham_type)
+
+
+def data_key(row):
+    return get_ham_idx(row[0]), natsort_key(row[1:])
+
+
+def get_ndof(ham_attr):
+    ham_type, ham_param = ham_attr
+    if ham_type == "Hubbard":
+        pattern = r"[OP]_(\d+)_(\d+)"
+    else:
+        pattern = r"[OP]_(\d+)"
+    match = re.compile(pattern).search(ham_param)
+    if not match:
+        print(f"Warning: Failed to parse #DOF: {ham_attr}")
+        return nan
+
+    try:
+        if ham_type == "Hubbard":
+            ndof = int(match.group(1)) + int(match.group(2))
+        else:
+            ndof = int(match.group(1))
+    except ValueError:
+        print(f"Warning: Failed to parse #DOF: {ham_attr}")
+        return nan
+
+    return ndof
+
+
 def filter_energy_var(data):
     out = []
     for row in data:
@@ -124,32 +155,8 @@ def filter_energy_var(data):
     return out
 
 
-def get_ham_idx(s):
-    return ham_types.index(s)
-
-
-def data_key(a):
-    return get_ham_idx(a[0]), natsort_key(a[1:])
-
-
-def get_system_size(ham_param):
-    match = re.compile(r"[OP]_(\d+)").search(ham_param)
-    if not match:
-        print(f"Warning: Failed to parse system size: {ham_param}")
-        return nan
-
-    try:
-        size = int(match.group(1))
-    except ValueError:
-        print(f"Warning: Failed to parse system size: {ham_param}")
-        return nan
-
-    return size
-
-
 def main():
     data = get_data()
-    data = filter_energy_var(data)
     data.sort(key=data_key)
     print(tabulate(data, tablefmt="plain"))
 

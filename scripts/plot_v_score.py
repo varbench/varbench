@@ -10,7 +10,7 @@ from collect import (
     filter_energy_var,
     get_data,
     get_ham_idx,
-    get_system_size,
+    get_ndof,
 )
 
 plt.rcParams["font.family"] = "serif"
@@ -60,8 +60,8 @@ def get_legend():
 
 
 def get_marker(ham_attr):
-    ham_name, ham_param = ham_attr
-    idx = get_ham_idx(ham_name)
+    ham_type, ham_param = ham_attr
+    idx = get_ham_idx(ham_type)
     color = f"C{idx}"
 
     match = re.compile(r"([a-z]+(_[a-z]+)*)_").match(ham_param)
@@ -76,6 +76,13 @@ def get_marker(ham_attr):
     marker = lattice_markers[lattice]
 
     return (color,) + marker
+
+
+def get_v_score(row):
+    ham_type, ham_param, _, energy, energy_var = row
+    V = get_ndof((ham_type, ham_param))
+    v_score = V * energy_var / energy**2
+    return v_score
 
 
 def main():
@@ -93,11 +100,7 @@ def main():
             ham_attrs.append(ham_attr)
         ham_attr_idxs.append(ham_attrs.index(ham_attr))
 
-        N = get_system_size(row[1])
-        energy = row[3]
-        energy_var = row[4]
-        v_score = N * energy_var / energy**2
-        v_scores.append(v_score)
+        v_scores.append(get_v_score(row))
 
         markers.append(get_marker(ham_attr))
 
