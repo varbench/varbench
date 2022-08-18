@@ -1,3 +1,3 @@
-|       Energy          |  Sigma          | Energy Variance  |  Method                                                          | Data repository                |
-| ----------------------| ----------------| -----------------|------------------------------------------------------------------|------------------------------- |
-|   -76.162             |    0.006        |     0.14(2)      | VMC Hiden Fermion Determinant State Ansatz (N_hidden = 16. Single hidden layer fully connected net with alpha = 1). Soft mean-field constraint for Neel order. | https://arxiv.org/abs/2111.10420 |
+| Energy  | Sigma | Energy Variance | DOF | Method                                                       | Data Repository                  |
+|---------|-------|-----------------|-----|--------------------------------------------------------------|----------------------------------|
+| -76.162 | 0.006 | 0.14(2)         | 36  | VMC Hiden Fermion Determinant State Ansatz (N_hidden = 16. Single hidden layer fully connected net with alpha = 1). Soft mean-field constraint for Neel order. | https://arxiv.org/abs/2111.10420 |

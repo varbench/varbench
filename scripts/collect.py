@@ -1,21 +1,17 @@
 #!/usr/bin/env python3
 
 import os
-import re
 from math import isnan, nan
 
 from natsort import natsort_key
 from tabulate import tabulate
 from unidecode import unidecode
 
+from reader import read_file
+
 root = "../"
 ham_types = ["TfIsing", "Heisenberg", "J1J2", "Hubbard"]
-
-
-def split_cols(s):
-    cols = s.strip().strip("|").split("|")
-    cols = [x.strip() for x in cols]
-    return cols
+required_fields = ["method", "energy", "energy variance", "dof"]
 
 
 def parse_float(s):
@@ -36,68 +32,48 @@ def parse_float(s):
         return nan
 
 
-def parse_file(data, file_path, ham_attr):
-    fields = ["method", "energy", "energy variance"]
+def parse_data(data, file_path, ham_attr):
+    headers, rows, _ = read_file(file_path)
+    headers = tuple(x.lower() for x in headers)
+    field_indices = {x: headers.index(x) for x in required_fields}
+    for cols in rows:
 
-    state = 0
-    with open(file_path, "r") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
+        def warn(msg):
+            print(f"Warning: {msg}: {ham_attr + cols}")
 
-            if state == 0:
-                line = line.lower()
-                if not all(x in line for x in fields):
-                    continue
+        method = cols[field_indices["method"]]
 
-                cols = split_cols(line)
-                field_indices = {x: cols.index(x) for x in fields}
-                state = 1
+        energy = cols[field_indices["energy"]]
+        energy = parse_float(energy)
+        if isnan(energy):
+            warn("Failed to parse energy")
+            continue
+        if energy == 0:
+            warn("Zero energy")
+            continue
+        if energy > 0:
+            warn("Positive energy")
+            # energy *= -1
 
-            elif state == 1:
-                if "---" in line:
-                    continue
+        energy_var = cols[field_indices["energy variance"]]
+        energy_var = parse_float(energy_var)
+        if isnan(energy_var):
+            warn("Failed to parse variance")
+            # continue
+        if energy_var == 0:
+            # warn("Zero variance")
+            # continue
+            pass
+        if energy_var < 0:
+            warn("Negative variance")
+            # continue
 
-                cols = split_cols(line)
+        dof = int(cols[field_indices["dof"]])
 
-                def warn(msg):
-                    print(f"Warning: {msg}: {ham_attr + tuple(cols)}")
-
-                method = cols[field_indices["method"]]
-
-                energy = cols[field_indices["energy"]]
-                energy = parse_float(energy)
-                if isnan(energy):
-                    warn("Failed to parse energy")
-                    continue
-                if energy == 0:
-                    warn("Zero energy")
-                    continue
-                if energy > 0:
-                    warn("Positive energy")
-                    # energy *= -1
-
-                energy_var = cols[field_indices["energy variance"]]
-                energy_var = parse_float(energy_var)
-                if isnan(energy_var):
-                    warn("Failed to parse variance")
-                    # continue
-                if energy_var == 0:
-                    # warn("Zero variance")
-                    # continue
-                    pass
-                if energy_var < 0:
-                    warn("Negative variance")
-                    # continue
-
-                data.append(ham_attr + (method, energy, energy_var))
-
-            else:
-                raise ValueError(f"Unknown state: {state}")
+        data.append((*ham_attr, method, energy, energy_var, dof))
 
 
-# (ham_type, ham_param, method, energy, energy_var)
+# (ham_type, ham_param, method, energy, energy_var,dof)
 def get_data():
     data = []
     for _dir in os.scandir(root):
@@ -111,7 +87,7 @@ def get_data():
             ham_param = file.name.replace(".md", "")
 
             file_path = os.path.join(root, _dir.name, file.name)
-            parse_file(data, file_path, (ham_type, ham_param))
+            parse_data(data, file_path, (ham_type, ham_param))
 
     return data
 
@@ -122,29 +98,6 @@ def get_ham_idx(ham_type):
 
 def data_key(row):
     return get_ham_idx(row[0]), natsort_key(row[1:])
-
-
-def get_ndof(ham_attr):
-    ham_type, ham_param = ham_attr
-    if ham_type == "Hubbard":
-        pattern = r"[OP]_(\d+)_(\d+)"
-    else:
-        pattern = r"[OP]_(\d+)"
-    match = re.compile(pattern).search(ham_param)
-    if not match:
-        print(f"Warning: Failed to parse #DOF: {ham_attr}")
-        return nan
-
-    try:
-        if ham_type == "Hubbard":
-            ndof = int(match.group(1)) + int(match.group(2))
-        else:
-            ndof = int(match.group(1))
-    except ValueError:
-        print(f"Warning: Failed to parse #DOF: {ham_attr}")
-        return nan
-
-    return ndof
 
 
 def filter_energy_var(data):

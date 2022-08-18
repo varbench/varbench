@@ -1,3 +1,3 @@
-|       Energy          |  Sigma          | Energy Variance  |  Method                                                          | Data repository                |
-| ----------------------| ----------------| -----------------|------------------------------------------------------------------|------------------------------- |
-|      -24.426          |    0.002        |     0.021(2)      | VMC Hiden Fermion Determinant State Ansatz (N_hidden = 16. Single hidden layer fully connected net with alpha = 14). Soft mean-field constraint for lambda = 8 stripe order. | https://arxiv.org/abs/2111.10420 |
+| Energy  | Sigma | Energy Variance | DOF | Method                                                       | Data Repository                  |
+|---------|-------|-----------------|-----|--------------------------------------------------------------|----------------------------------|
+| -24.426 | 0.002 | 0.021(2)        | 28  | VMC Hiden Fermion Determinant State Ansatz (N_hidden = 16. Single hidden layer fully connected net with alpha = 14). Soft mean-field constraint for lambda = 8 stripe order. | https://arxiv.org/abs/2111.10420 |

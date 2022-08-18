@@ -5,13 +5,7 @@ import re
 from matplotlib import pyplot as plt
 from matplotlib.lines import Line2D
 
-from collect import (
-    data_key,
-    filter_energy_var,
-    get_data,
-    get_ham_idx,
-    get_ndof,
-)
+from collect import data_key, filter_energy_var, get_data, get_ham_idx
 
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["font.serif"] = "STIX"
@@ -75,12 +69,11 @@ def get_marker(ham_attr):
         lattice = "_default"
     marker = lattice_markers[lattice]
 
-    return (color,) + marker
+    return (color, *marker)
 
 
 def get_v_score(row):
-    ham_type, ham_param, _, energy, energy_var = row
-    V = get_ndof((ham_type, ham_param))
+    ham_type, ham_param, _, energy, energy_var, V = row
     v_score = V * energy_var / energy**2
     return v_score
 

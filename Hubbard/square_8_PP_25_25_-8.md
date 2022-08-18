@@ -1,3 +1,3 @@
-| Energy        | Sigma           | Energy Variance  | S(qmax) | qmax | Method | Data repository|
-| :-------------: |:-------------:| :-----:| :-------------: |:-------------:| :-----:|:-----:|
-|-232.050|0.007||||AFQMC (Metropolis, Trotter error extrapolated), numerically exact||
+| Energy   | Sigma | Energy Variance | DOF | S(qmax) | qmax | Method                                                       | Data Repository |
+|----------|-------|-----------------|-----|---------|------|--------------------------------------------------------------|-----------------|
+| -232.050 | 0.007 |                 | 50  |         |      | AFQMC (Metropolis, Trotter error extrapolated), numerically exact |                 |

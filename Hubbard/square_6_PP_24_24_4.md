@@ -1,3 +1,3 @@
-| Energy        | Sigma           | Energy Variance  | S(qmax) | qmax | Method | Data repository|
-| :-------------: |:-------------:| :-----:| :-------------: |:-------------:| :-----:|:-----:|
-|5.33124|0.00144||||CP AFQMC with Constraint Release; no strict upper bound property|H. Shi and S. Zhang, Symmetry in auxiliary-field quantum Monte Carlo calculations, Phys. Rev. B 88, 125132 (2013).|
+| Energy  | Sigma   | Energy Variance | DOF | S(qmax) | qmax | Method                                                       | Data Repository                                              |
+|---------|---------|-----------------|-----|---------|------|--------------------------------------------------------------|--------------------------------------------------------------|
+| 5.33124 | 0.00144 |                 | 48  |         |      | CP AFQMC with Constraint Release; no strict upper bound property | H. Shi and S. Zhang, Symmetry in auxiliary-field quantum Monte Carlo calculations, Phys. Rev. B 88, 125132 (2013). |

@@ -2,7 +2,7 @@
 
 from tabulate import tabulate
 
-from collect import data_key, get_data, get_ndof
+from collect import data_key, get_data
 
 
 def main():
@@ -11,9 +11,8 @@ def main():
 
     out = []
     for row in data:
-        V = get_ndof(row[1])
-        energy = row[3] / V
-        out.append(row[:2] + (energy, row[2]))
+        energy_per_dof = row[3] / row[5]
+        out.append((*row[:2], energy_per_dof, row[2]))
 
     print(tabulate(out, tablefmt="plain"))
 
