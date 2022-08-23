@@ -73,7 +73,7 @@ def parse_data(data, file_path, ham_attr):
         data.append((*ham_attr, method, energy, energy_var, dof))
 
 
-# (ham_type, ham_param, method, energy, energy_var,dof)
+# (ham_type, ham_param, method, energy, energy_var, dof)
 def get_data():
     data = []
     for _dir in os.scandir(root):
