@@ -6,3 +6,4 @@
 | -72.167            | 0.003   | 5.42              | 36  | VMC with projected BCS (Z2 spin liquid)                      |                 |
 | -72.37403751679382 |         | 2.253085463868047 | 36  | DMRG (bond dimension = 2048)                                 |                 |
 | -69.9694           | 0.0031  | 9.83512           | 36  | RBM (alpha = 1)                                              |                 |
+| -68.6839           | 0.0052  | 27.3847           | 36  | Jastrow baseline                                             |                 |

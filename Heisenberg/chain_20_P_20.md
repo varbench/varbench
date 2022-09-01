@@ -5,4 +5,5 @@
 | -35.6175098        | 0.0000046 | 0.0000534       | 20  | RNN + translational symmetry          |                 |
 | -35.61452          | 0.00033   | 0.0488          | 20  | VMC with projected fermions + Jastrow |                 |
 | -35.6175461195     |           | 1.2E-10         | 20  | DMRG (max truncation error ~ 1.0E-13) |                 |
-| -35.6039           | 0.00041   | 0.175783        | 20  | RBM (alpha = 1)                       |                 |
+| -35.60392          | 0.00041   | 0.1757833       | 20  | RBM (alpha = 1)                       |                 |
+| -35.55179          | 0.00049   | 0.2419342       | 20  | Jastrow baseline                      |                 |
