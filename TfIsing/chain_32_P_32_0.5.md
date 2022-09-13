@@ -4,4 +4,4 @@
 | -34.03338          | 1.9e-05 | 3.5e-04         | 32  | Symmetric FFN, Relu, 32 features per translation | data/NQS/chain32P_32_0.5.mpack |
 | -34.033550         | 5.8e-5  | 0.0033952969    | 32  | RBM (alpha = 1)                                  |                                |
 | -34.03342111914689 |         | 1.6e-10         | 32  | DMRG (bond dimension = 24)                       |                                |
-| -34.01021          | 3.7e-4  | 0.1426192       | 32  | Jastrow baseline                                 |                                |
+| -34.01715          | 3.3e-4  | 0.1117891       | 32  | Jastrow baseline                                 |                                |
