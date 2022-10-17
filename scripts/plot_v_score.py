@@ -233,17 +233,17 @@ def main():
     for (ham_attr, _), idx in zip(v_scores.items(), ranks):
         ham_idxs[ham_attr] = idx
     idx_hams = {v: k for k, v in ham_idxs.items()}
-    y_max = len(ham_idxs)
+    x_max = len(ham_idxs)
 
-    fig, ax = plt.subplots(figsize=(10, 16))
+    fig, ax = plt.subplots(figsize=(16, 9))
 
     for (ham_type, ham_param, _, v_score), (color, marker, size) in zip(data, markers):
         ham_attr = ham_type, ham_param
         idx = ham_idxs[ham_attr]
         if v_score == v_scores[ham_attr]:
             ax.plot(
-                v_score,
                 idx,
+                v_score,
                 linestyle="",
                 marker=marker,
                 markeredgecolor=color,
@@ -253,8 +253,8 @@ def main():
             )
         else:
             ax.plot(
-                v_score,
                 idx,
+                v_score,
                 linestyle="",
                 marker=marker,
                 markeredgewidth=0,
@@ -262,21 +262,24 @@ def main():
                 markersize=size,
             )
 
-    for i in range(y_max // 2 + 1):
-        ax.axhspan(i * 2 - 0.5, i * 2 + 0.5, color="0.95", zorder=0.3)
+    for i in range(x_max // 2 + 1):
+        ax.axvspan(i * 2 - 0.5, i * 2 + 0.5, color="0.95", zorder=0.3)
 
-    ax.set_xlabel("V-score")
-    ax.set_ylim([-1, y_max])
-    ax.set_xscale("log")
-    ax.set_yticks(range(y_max))
-    ax.yaxis.set_tick_params(length=0)
-    ax.set_yticklabels([idx_hams[i][1] for i in range(y_max)], fontfamily="monospace")
-    for i, text in enumerate(ax.get_yticklabels()):
+    ax.set_ylabel("V-score")
+    ax.set_xlim([-1, x_max])
+    ax.set_yscale("log")
+    ax.set_xticks(range(x_max))
+    ax.xaxis.tick_top()
+    ax.xaxis.set_tick_params(length=0)
+    ax.set_xticklabels(
+        [idx_hams[i][1] for i in range(x_max)], fontfamily="monospace", rotation=90
+    )
+    for i, text in enumerate(ax.get_xticklabels()):
         text.set_color(ham_colors[idx_hams[i][0]])
-    ax.grid(axis="x", color="0.8", linestyle="--", zorder=0.4)
+    ax.grid(axis="y", color="0.8", linestyle="--", zorder=0.4)
     ax.legend(
         handles=get_legend(),
-        loc="upper left",
+        # loc="upper left",
         ncol=2,
         fontsize="xx-large",
         # markerscale=2,
