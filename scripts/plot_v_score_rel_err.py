@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
+from math import sqrt
+
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.stats import linregress
 from tabulate import tabulate
 
-from collect import filter_energy_var, get_data
+from collect import data_key, filter_energy_var, get_data
 from plot_v_score import (
     check_exact_energy,
     get_exact_energies,
@@ -30,6 +32,7 @@ def main():
     data = get_data()
     exact_energies = get_exact_energies(data)
     data = filter_energy_var(data)
+    data.sort(key=data_key)
 
     data_new = []
     markers = []
@@ -73,15 +76,32 @@ def main():
     lm = linregress(xs, ys)
     print(
         f"slope {lm.slope:.8g} "
+        f"± {lm.stderr:.3g} "
         f"intercept {lm.intercept:.8g} "
+        f"± {lm.intercept_stderr:.3g} "
         f"R-squared {lm.rvalue**2:.3g} "
-        f"p-value {lm.pvalue:.3g} "
-        f"slope_std_err {lm.stderr:.3g} "
-        f"intercept_std_err {lm.intercept_stderr:.3g}"
+        f"p-value {lm.pvalue:.3g}"
+    )
+
+    # def _lm(x):
+    #     return lm.slope * x + lm.intercept
+
+    bs = ys - xs
+    b_mean = bs.mean()
+    b_std_err = bs.std() / sqrt(bs.size)
+    ys_pred = xs + b_mean
+    R_squared = (
+        1 - ((ys_pred - ys) ** 2).sum() / ((ys_pred - ys_pred.mean()) ** 2).sum()
+    )
+    print(
+        "slope = 1: "
+        f"intercept {b_mean:.8g} "
+        f"± {b_std_err:.3g} "
+        f"R-squared {R_squared:.3g}"
     )
 
     def _lm(x):
-        return lm.intercept + lm.slope * x
+        return x + b_mean
 
     fig, ax = plt.subplots(figsize=(6, 4))
 
