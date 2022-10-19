@@ -40,7 +40,7 @@ def parse_float(s):
     s = _unidecode(s)
     s = s.replace("(", "").replace(")", "")
     if not s:
-        return 0
+        return nan
 
     try:
         return float(s)
@@ -75,6 +75,7 @@ def find_tag(s, max_width=60):
     elif any(x in s for x in ["determinant", "jastrow", "bcs"]):
         tag = "vmc"
     elif "mvmc" in s:
+        print("Info: Classify as VMC:", s)
         # TODO: Currently this only matches Nikita's results with Jastrow-based methods
         tag = "vmc"
     elif "fn on the" in s:
@@ -84,6 +85,7 @@ def find_tag(s, max_width=60):
     elif "afqmc" in s:
         tag = "afqmc"
     elif "qmc" in s:
+        print("Info: Classify as ED:", s)
         # TODO: Currently this only matches QMC for Heisenberg square_10_OO_100,
         # which is accurate enough to be considered ED
         tag = "ed"
@@ -123,20 +125,15 @@ def parse_data(data, file_path, ham_attr):
             continue
         if energy > 0:
             warn("Positive energy")
-            # energy *= -1
 
         energy_var = cols[field_indices["energy variance"]]
         energy_var = parse_float(energy_var)
-        if isnan(energy_var):
-            warn("Failed to parse variance")
-            # continue
-        if energy_var == 0:
-            # warn("Zero variance")
-            # continue
-            pass
-        if energy_var < 0:
-            warn("Negative variance")
-            # continue
+        # if isnan(energy_var):
+        #     warn("Missing variance")
+        # if energy_var == 0:
+        #     warn("Zero variance")
+        # if energy_var < 0:
+        #     warn("Negative variance")
 
         dof = int(cols[field_indices["dof"]])
 
@@ -158,7 +155,7 @@ def get_data():
 
             # Filter out Hubbard data with strange U values
             if re.compile(r"[^.]+\.\d{4,}").fullmatch(ham_param):
-                print(f"Warning: Skip strange U value: {(ham_type, ham_param)}")
+                print(f"Info: Skip strange U value: {(ham_type, ham_param)}")
                 continue
 
             file_path = os.path.join(root, _dir.name, file.name)
@@ -172,7 +169,24 @@ def data_key(row):
 
 
 def filter_energy_var(data):
-    return [x for x in data if x[4] > 0]
+    out = []
+    for row in data:
+        energy_var = row[4]
+        tag = row[6]
+        if isnan(energy_var):
+            # if tag != "ed":
+            #     print("Warning: Missing variance:", row)
+            continue
+        if energy_var == 0:
+            if tag == "ed":
+                continue
+            else:
+                print("Warning: Zero variance:", row)
+        if energy_var < 0:
+            print("Warning: Negative variance:", row)
+            continue
+        out.append(row)
+    return out
 
 
 def main():

@@ -37,6 +37,8 @@ lat_markers = {
     "pyrochlore": ("pyrochlore", 11),
 }
 
+v_score_exact = 1e-13
+
 
 def get_exact_energies(data):
     out = {}
@@ -50,9 +52,39 @@ def get_exact_energies(data):
     return out
 
 
+def get_ulp(x):
+    s = "{:.16g}".format(x)
+    i = s.find(".")
+    if i == -1:
+        return 1
+    else:
+        return 0.1 ** (len(s) - i - 1)
+
+
+def check_exact_energy(exact_energies, row):
+    ham_attr = row[:2]
+    if ham_attr not in exact_energies:
+        return False
+
+    energy = row[3]
+    tag = row[6]
+    energy_ulp = get_ulp(energy)
+    exact_energy = exact_energies[ham_attr]
+    exact_ulp = get_ulp(exact_energy)
+    if energy + energy_ulp < exact_energy - exact_ulp:
+        print("Warning: Lower than exact energy:", row)
+        # For DMRG we consider it to be reasonable,
+        # while for VMC we consider it an error
+        if tag != "mps":
+            return True
+    elif energy - energy_ulp < exact_energy + exact_ulp:
+        print("Warning: Equal to exact energy within reported precision:", row)
+    return False
+
+
 def get_hubbard_energy_inf(ham_param):
     try:
-        match = re.compile(r"chain_(\d+)_[OP]_(\d+)_(\d+)_([\d\.]+)").fullmatch(
+        match = re.compile(r"chain_(\d+)_[OP]_(\d+)_(\d+)_([.\d]+)").fullmatch(
             ham_param
         )
         if match:
@@ -62,7 +94,7 @@ def get_hubbard_energy_inf(ham_param):
             U = float(match.group(4))
             return U * N_up * N_down / V
 
-        match = re.compile(r"square_(\d+)_[AOP][AOP]_(\d+)_(\d+)_([\d\.]+)").fullmatch(
+        match = re.compile(r"square_(\d+)_[AOP][AOP]_(\d+)_(\d+)_([.\d]+)").fullmatch(
             ham_param
         )
         if match:
@@ -74,7 +106,7 @@ def get_hubbard_energy_inf(ham_param):
             return U * N_up * N_down / V
 
         match = re.compile(
-            r"square_sqrt(\d+)_[AOP][AOP]_(\d+)_(\d+)_([\d\.]+)"
+            r"square_sqrt(\d+)_[AOP][AOP]_(\d+)_(\d+)_([.\d]+)"
         ).fullmatch(ham_param)
         if match:
             V = int(match.group(1))
@@ -84,7 +116,7 @@ def get_hubbard_energy_inf(ham_param):
             return U * N_up * N_down / V
 
         match = re.compile(
-            r"rectangular_(\d+)x(\d+)_[AOP][AOP]_(\d+)_(\d+)_([\d\.]+)"
+            r"rectangular_(\d+)x(\d+)_[AOP][AOP]_(\d+)_(\d+)_([.\d]+)"
         ).fullmatch(ham_param)
         if match:
             L_x = int(match.group(1))
@@ -103,8 +135,12 @@ def get_hubbard_energy_inf(ham_param):
     return 0
 
 
-def get_v_score(row):
+def get_v_score(row, exact):
     ham_type, ham_param, _, energy, energy_var, dof, _ = row
+
+    # Use a small value to show that the VMC energy reaches the machine precision
+    if energy_var == 0:
+        return exact
 
     if ham_type == "Hubbard":
         energy_inf = get_hubbard_energy_inf(ham_param)
@@ -205,16 +241,12 @@ def main():
     data_new = []
     markers = []
     for row in data:
-        v_score = get_v_score(row)
-        # if v_score < 1e-10:
-        #     continue
+        if check_exact_energy(exact_energies, row):
+            continue
 
         ham_attr = row[:2]
         energy = row[3]
-        if ham_attr in exact_energies and energy < exact_energies[ham_attr]:
-            print("Warning: Lower than exact energy:", row)
-            continue
-
+        v_score = get_v_score(row, v_score_exact)
         if ham_attr not in v_scores or energy < energies[ham_attr]:
             v_scores[ham_attr] = v_score
             energies[ham_attr] = energy
@@ -268,6 +300,7 @@ def main():
     ax.set_ylabel("V-score")
     ax.set_xlim([-1, x_max])
     ax.set_yscale("log")
+
     ax.set_xticks(range(x_max))
     ax.xaxis.tick_top()
     ax.xaxis.set_tick_params(length=0)
@@ -276,10 +309,13 @@ def main():
     )
     for i, text in enumerate(ax.get_xticklabels()):
         text.set_color(ham_colors[idx_hams[i][0]])
+
+    ax.set_yticks([v_score_exact], minor=True)
+    ax.set_yticklabels(["exact"], minor=True)
+
     ax.grid(axis="y", color="0.8", linestyle="--", zorder=0.4)
     ax.legend(
         handles=get_legend(),
-        # loc="upper left",
         ncol=2,
         fontsize="xx-large",
         # markerscale=2,

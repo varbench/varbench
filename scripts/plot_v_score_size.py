@@ -6,10 +6,17 @@ from matplotlib import pyplot as plt
 from matplotlib.gridspec import GridSpec
 
 from collect import data_key, filter_energy_var, get_data
-from plot_v_score import _get_marker, get_exact_energies, get_v_score
+from plot_v_score import (
+    _get_marker,
+    check_exact_energy,
+    get_exact_energies,
+    get_v_score,
+)
 from plot_v_score_ham import get_key
 
 out_filename = "./v_score_size.pdf"
+
+v_score_exact = 1e-15
 
 
 def main():
@@ -21,14 +28,12 @@ def main():
     v_scores = {}
     energies = {}
     for row in data:
-        ham_attr = row[:2]
-        energy = row[3]
-        if ham_attr in exact_energies and energy < exact_energies[ham_attr]:
-            print("Warning: Lower than exact energy:", row)
+        if check_exact_energy(exact_energies, row):
             continue
 
+        energy = row[3]
         key = get_key(row)
-        v_score = get_v_score(row)
+        v_score = get_v_score(row, v_score_exact)
 
         if key not in v_scores or energy < energies[key]:
             v_scores[key] = v_score
@@ -39,7 +44,7 @@ def main():
         data.append((v_score, dof, _get_marker(ham_type, lattice)))
 
     fig = plt.figure(figsize=(6, 4))
-    xlim1 = (1.5e-13, 6.5e-4)
+    xlim1 = (1.5e-16, 6.5e-4)
     xlim2 = (1.5e-4, 3.5e-1)
     gs = GridSpec(
         1,
@@ -80,9 +85,11 @@ def main():
     ax2.set_yscale("log")
     ax.set_xlim(*xlim1)
     ax2.set_xlim(*xlim2)
-    ax.set_ylim(6.5e0, 1.2e3)
-    ax2.set_ylim(6.5e0, 1.2e3)
+    ax.set_ylim(6.5e0, 1.3e3)
+    ax2.set_ylim(6.5e0, 1.3e3)
     ax.set_xticks([1e-12, 1e-8, 1e-4])
+    ax.set_xticks([v_score_exact], minor=True)
+    ax.set_xticklabels(["exact"], minor=True, rotation=90)
     ax.set_yticks([1e1, 1e2, 1e3])
     ax2.set_yticks([1e1, 1e2, 1e3])
     ax.spines.right.set_visible(False)

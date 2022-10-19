@@ -6,7 +6,13 @@ from scipy.stats import linregress
 from tabulate import tabulate
 
 from collect import filter_energy_var, get_data
-from plot_v_score import get_exact_energies, get_legend, get_marker
+from plot_v_score import (
+    check_exact_energy,
+    get_exact_energies,
+    get_legend,
+    get_marker,
+    get_v_score,
+)
 
 out_filename = "./v_score_rel_err.pdf"
 
@@ -31,18 +37,20 @@ def main():
         ham_attr = row[:2]
         if ham_attr not in exact_energies:
             continue
+
+        if check_exact_energy(exact_energies, row):
+            continue
+
+        method = row[2]
+        energy = row[3]
         exact_energy = exact_energies[ham_attr]
-
-        _, _, method, energy, energy_var, dof, _ = row
-
-        if energy < exact_energy:
-            print("Warning: Lower than exact energy:", row)
-            continue
         energy_rel_err = (energy - exact_energy) / abs(exact_energy)
-        if energy_rel_err < 1e-10:
+        if energy_rel_err < 1e-7:
             continue
 
-        v_score = dof * energy_var / energy**2
+        v_score = get_v_score(row, exact=1e-16)
+        if v_score < 1e-6:
+            continue
 
         data_new.append(
             (*ham_attr, method, energy_rel_err, v_score, energy_rel_err / v_score)
