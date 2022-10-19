@@ -34,6 +34,10 @@ def main():
     data_new = []
     markers = []
     for row in data:
+        tag = row[6]
+        if tag == "vafqmc":
+            continue
+
         ham_attr = row[:2]
         if ham_attr not in exact_energies:
             continue
@@ -53,7 +57,7 @@ def main():
             continue
 
         data_new.append(
-            (*ham_attr, method, energy_rel_err, v_score, energy_rel_err / v_score)
+            (*ham_attr, tag, method, energy_rel_err, v_score, energy_rel_err / v_score)
         )
         markers.append(get_marker(ham_attr))
     data = data_new
@@ -61,7 +65,7 @@ def main():
 
     data_new = []
     for row, marker in zip(data, markers):
-        data_new.append((row[4], row[3], marker))
+        data_new.append((row[5], row[4], row[2], marker))
     data = data_new
 
     xs = np.log([x[0] for x in data])
@@ -91,16 +95,28 @@ def main():
         zorder=0.6,
     )
 
-    for v_score, energy_rel_err, (color, marker, size) in data:
-        ax.plot(
-            v_score,
-            energy_rel_err,
-            linestyle="",
-            marker=marker,
-            markeredgewidth=0,
-            markerfacecolor=color,
-            markersize=size,
-        )
+    for v_score, energy_rel_err, tag, (color, marker, size) in data:
+        if tag == "vqe":
+            ax.plot(
+                v_score,
+                energy_rel_err,
+                linestyle="",
+                marker=marker,
+                markeredgecolor=color,
+                markeredgewidth=1,
+                markerfacecolor=color,
+                markersize=size,
+            )
+        else:
+            ax.plot(
+                v_score,
+                energy_rel_err,
+                linestyle="",
+                marker=marker,
+                markeredgewidth=0,
+                markerfacecolor=color,
+                markersize=size,
+            )
 
     ax.set_xlabel("V-score")
     ax.set_ylabel("Energy rel. err.")
