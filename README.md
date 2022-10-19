@@ -9,7 +9,7 @@ The files in each folders contain benchmark results on several lattices, and con
 
 `Sigma`: the statistical error on the mean of the energy (for methods where this is relevant)
 
-`Energy Variance`: the value of $\langle H^2 \rangle - \langle H \rangle^2$ for the given method
+`Energy Variance`: the value of $\langle H^2 \rangle - \langle H \rangle^2$ for the given method. Even if it reaches the machine precision, please fill in the machine precision and do not leave it blank
 
 `DOF`: number of degrees of freedom. For spin models it's the number of spins, and for Hubbard model it's `Nup + Ndown`
 

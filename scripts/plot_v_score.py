@@ -37,7 +37,7 @@ lat_markers = {
     "pyrochlore": ("pyrochlore", 11),
 }
 
-v_score_exact = 1e-13
+v_score_exact = 2e-13
 
 
 def get_exact_energies(data):
@@ -138,16 +138,17 @@ def get_hubbard_energy_inf(ham_param):
 def get_v_score(row, exact):
     ham_type, ham_param, _, energy, energy_var, dof, _ = row
 
-    # Use a small value to show that the VMC energy reaches the machine precision
-    if energy_var == 0:
-        return exact
-
     if ham_type == "Hubbard":
         energy_inf = get_hubbard_energy_inf(ham_param)
     else:
         energy_inf = 0
 
     v_score = dof * energy_var / (energy - energy_inf) ** 2
+
+    # Use a small value to show that the VMC energy reaches the machine precision
+    if v_score < exact:
+        v_score = exact
+
     return v_score
 
 
