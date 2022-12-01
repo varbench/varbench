@@ -7,12 +7,8 @@ It is assumed that the unit of energy is $J_1 = 1$.
 
 ## Naming
 
-The name of the data files follows the convention `lattice_N_J2.md`
+The names of the data files follow the convention `lattice_N_J2.md`
 
----
-
-`lattice` is the name of the lattice, also containing its extent/further information needed to specify the specific lattice, including its periodic boundary conditions. See `lattice.md` in the main repository for further information and examples.
-
-`N` is the total number of spins
-
-`J2` is the next-nearest neighbors exchange constant
+* `lattice` is the name of the lattice, also containing its extent, boundary conditions, and further information needed to specify the lattice. See `lattice.md` in the main repository for the convention and examples
+* `N` is the number of spins
+* `J2` is the next-nearest neighbor interaction

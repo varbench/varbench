@@ -1,0 +1,3 @@
+| Energy              | Sigma    | Energy Variance | DOF | Method                                          | Data Repository |
+|---------------------|----------|-----------------|-----|-------------------------------------------------|-----------------|
+| -9.7906046108775    |          | 1.66e-1         | 32  | QMC (continuous-time expansion), PRB 93, 155117 | [SpinlesstV-LCT-INT](https://github.com/wangleiphy/SpinlesstV-LCT-INT) |
