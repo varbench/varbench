@@ -9,7 +9,7 @@ def Epsilon(k, h):
 L = 32
 # Gamma is in units of the interaction srength
 Gamma = 1
-# V=1
+# V = 1
 
 pi = math.pi
 
