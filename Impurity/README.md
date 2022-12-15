@@ -20,9 +20,9 @@ $$\hat{H}_\text{DD} = U \sum_m \hat{n}_{m \uparrow} \hat{n}_{m \downarrow} + (U 
 
 $$\hat{H}_\text{SF} = J \sum_{m' m} \left( \hat{d}^\dagger_{m \uparrow} \hat{d}_{m \downarrow} \hat{d}_{m' \uparrow} \hat{d}^\dagger_{m' \downarrow} + \text{h.c.} \right),$$
 
-$$\hat{H}_\text{PH} = -J \sum_{m' > m} \left( \hat{d}^\dagger_{m \uparrow} \hat{d}^\dagger_{m \downarrow} \hat{d}_{m' \uparrow} \hat{d}_{m' \uparrow} + \text{h.c.} \right),$$
+$$\hat{H}_\text{PH} = -J \sum_{m' > m} \left( \hat{d}^\dagger_{m \uparrow} \hat{d}^\dagger_{m \downarrow} \hat{d}_{m' \uparrow} \hat{d}_{m' \downarrow} + \text{h.c.} \right),$$
 
-with $m \in \\{1, 2, 3\\}$ being the orbital index, and **DD**, **SF**, and **PH** denote the density-density, spin-flip, and pair-hopping interactions respectively.
+with $m \in \\{1, 2, 3\\}$ being the orbital index, and **DD**, **SF**, and **PH** denote the density-density, the spin-flip, and the pair-hopping interactions respectively.
 
 We have constructed the following models one might need to solve in typical DMFT calculations:
 (**SB_Imp**) single-band Anderson impurity model with a semielliptic spectral function, i.e., $-\frac{1}{\pi} \mathrm{Im} \Delta(\omega) = \frac{2}{\pi D} \sqrt{1 - \left( \frac{\omega}{D} \right)^2}$ with $D$ being the half-bandwidth and $U = D$;
