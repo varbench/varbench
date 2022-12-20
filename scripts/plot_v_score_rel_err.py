@@ -15,6 +15,7 @@ from plot_v_score import (
     get_marker,
     get_v_score,
 )
+from plot_v_score_ham import get_extra_param
 
 out_filename = "./v_score_rel_err.pdf"
 
@@ -42,20 +43,33 @@ def main():
             continue
 
         ham_attr = row[:2]
+        ham_type, ham_param = ham_attr
         if ham_attr not in exact_energies:
             continue
+
+        method = row[2]
+        # Skip some J2 values to make the plot not too crowded
+        if ham_type == "TfIsing":
+            if "VQE" in method and method not in [
+                "VQE HV (d = 26)",
+                "VQE R-CX (d = 10)",
+            ]:
+                continue
+        elif ham_type == "J1J2":
+            J2 = float(get_extra_param(ham_param))
+            if J2 not in [0.2, 0.5, 0.55, 0.8, 1]:
+                continue
 
         if check_exact_energy(exact_energies, row):
             continue
 
-        method = row[2]
         energy = row[3]
-        exact_energy = exact_energies[ham_attr]
+        exact_energy, _ = exact_energies[ham_attr]
         energy_rel_err = (energy - exact_energy) / abs(exact_energy)
         if energy_rel_err < 1e-7:
             continue
 
-        v_score = get_v_score(row, exact=1e-16)
+        v_score = get_v_score(row, exact_threshold=0, exact_pos=0)
         if v_score < 1e-6:
             continue
 
@@ -103,10 +117,14 @@ def main():
     def _lm(x):
         return x + b_mean
 
-    fig, ax = plt.subplots(figsize=(6, 4))
+    data_pqc = [x for x in data if x[2] == "pqc"]
+    xs_pqc = np.log([x[0] for x in data_pqc])
+
+    fig, ax1 = plt.subplots(figsize=(6, 4))
+    ax2 = ax1.inset_axes([0.6, 0.1, 0.35, 0.35])
 
     v_min, v_max = get_padded_range(xs)
-    ax.plot(
+    ax1.plot(
         np.exp([v_min, v_max]),
         np.exp([_lm(v_min), _lm(v_max)]),
         color="k",
@@ -115,37 +133,59 @@ def main():
         zorder=0.6,
     )
 
-    for v_score, energy_rel_err, tag, (color, marker, size) in data:
-        if tag == "vqe":
-            ax.plot(
-                v_score,
-                energy_rel_err,
-                linestyle="",
-                marker=marker,
-                markeredgecolor=color,
-                markeredgewidth=1,
-                markerfacecolor=color,
-                markersize=size,
-            )
-        else:
-            ax.plot(
-                v_score,
-                energy_rel_err,
-                linestyle="",
-                marker=marker,
-                markeredgewidth=0,
-                markerfacecolor=color,
-                markersize=size,
-            )
+    v_min, v_max = get_padded_range(xs_pqc, pad_ratio=0.1)
+    ax2.plot(
+        np.exp([v_min, v_max]),
+        np.exp([_lm(v_min), _lm(v_max)]),
+        color="k",
+        linestyle="--",
+        linewidth=0.5,
+        zorder=0.6,
+    )
 
-    ax.set_xlabel("V-score")
-    ax.set_ylabel("Energy rel. err.")
-    ax.set_xscale("log")
-    ax.set_yscale("log")
-    ax.grid(color="0.8", linestyle="--", zorder=0.4)
-    ax.legend(handles=get_legend(skip=("square_kagome",)), ncol=2, columnspacing=1)
+    for v_score, energy_rel_err, _, (color, marker, size) in data:
+        ax1.plot(
+            v_score,
+            energy_rel_err,
+            linestyle="",
+            marker=marker,
+            markeredgewidth=0,
+            markerfacecolor=color,
+            markersize=size,
+        )
+
+    for v_score, energy_rel_err, _, (color, marker, size) in data_pqc:
+        ax2.plot(
+            v_score,
+            energy_rel_err,
+            linestyle="",
+            marker=marker,
+            markeredgewidth=0,
+            markerfacecolor=color,
+            markersize=size,
+        )
+
+    # ax1.text(0.93, 0.05, "(a)", transform=ax1.transAxes)
+    # ax2.text(0.93, 0.05, "(b)", transform=ax2.transAxes)
+
+    ax1.set_xlabel("V-score")
+    ax1.set_ylabel("Energy rel. err.")
+    ax1.set_xscale("log")
+    ax2.set_xscale("log")
+    ax1.set_yscale("log")
+    ax2.set_yscale("log")
+    ax2.set_ylim([3e-6, 3e-3])
+    ax2.minorticks_off()
+    ax1.grid(color="0.8", linestyle="--", zorder=0.4)
+    ax2.grid(color="0.8", linestyle="--", zorder=0.4)
+    ax1.legend(
+        handles=get_legend(skip=("square_kagome",), impurity=False),
+        ncol=2,
+        columnspacing=1,
+    )
     fig.tight_layout()
     fig.savefig(out_filename, bbox_inches="tight")
+    plt.close()
 
 
 if __name__ == "__main__":

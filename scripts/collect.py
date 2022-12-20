@@ -11,19 +11,21 @@ from unidecode import unidecode
 from reader import read_file
 
 root = "../"
-ham_types = ["TfIsing", "Heisenberg", "J1J2", "Hubbard"]
+ham_types = ["TfIsing", "Heisenberg", "J1J2", "Hubbard", "tV", "Impurity"]
 known_tags = [
     "ed",
+    "exact_qmc",
     "mps",
     "tn",
     "rbm",
     "rnn",
     "nqs",
+    "mf",
     "vmc",
     "fn",
     "vafqmc",
     "afqmc",
-    "vqe",
+    "pqc",
 ]
 required_fields = ["method", "energy", "energy variance", "dof"]
 
@@ -45,7 +47,7 @@ def parse_float(s):
     try:
         return float(s)
     except ValueError:
-        print(f"Failed to parse float {s}")
+        # print(f"Warning: Failed to parse float {s}")
         return nan
 
 
@@ -58,20 +60,22 @@ def find_tag(s, max_width=60):
         s_short = s
 
     s = s.lower()
-    if any(
-        x in s for x in ["exact diag", "exact solution", "numerically exact", "quspin"]
-    ):
+    if any(x in s for x in ["exact diag", "exact solution", "quspin"]):
         tag = "ed"
+    elif "numerically exact" in s:
+        tag = "exact_qmc"
+    elif any(x in s for x in ["peps", "fork tensor"]):
+        tag = "tn"
     elif "dmrg" in s:
         tag = "mps"
-    elif "peps" in s:
-        tag = "tn"
     elif "rbm" in s:
         tag = "rbm"
     elif "rnn" in s:
         tag = "rnn"
-    elif any(x in s for x in ["ffn", "cnn"]):
+    elif any(x in s for x in ["ffn", "cnn", "clebschtree"]):
         tag = "nqs"
+    elif "mean field" in s:
+        tag = "mf"
     elif any(x in s for x in ["determinant", "jastrow", "bcs"]):
         tag = "vmc"
     elif "mvmc" in s:
@@ -85,12 +89,12 @@ def find_tag(s, max_width=60):
     elif "afqmc" in s:
         tag = "afqmc"
     elif "qmc" in s:
-        print("Info: Classify as ED:", s)
+        print("Info: Classify as exact QMC:", s)
         # TODO: Currently this only matches QMC for Heisenberg square_10_OO_100,
-        # which is accurate enough to be considered ED
-        tag = "ed"
+        # which is accurate enough to be considered exact
+        tag = "exact_qmc"
     elif "vqe" in s:
-        tag = "vqe"
+        tag = "pqc"
     else:
         print("Warning: Unknown method:", s)
         tag = ""
@@ -174,11 +178,11 @@ def filter_energy_var(data):
         energy_var = row[4]
         tag = row[6]
         if isnan(energy_var):
-            # if tag != "ed":
+            # if tag not in ["ed", "exact_qmc"]:
             #     print("Warning: Missing variance:", row)
             continue
         if energy_var == 0:
-            if tag == "ed":
+            if tag in ["ed", "exact_qmc"]:
                 continue
             else:
                 print("Warning: Zero variance:", row)

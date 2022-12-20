@@ -7,7 +7,7 @@ from pathlib import Path
 from matplotlib import pyplot as plt
 from matplotlib.gridspec import GridSpec
 
-from collect import data_key, filter_energy_var, get_data, ham_types
+from collect import data_key, filter_energy_var, get_data
 from plot_v_score import (
     check_exact_energy,
     get_exact_energies,
@@ -18,6 +18,7 @@ from plot_v_score import (
 
 out_filename = "./v_score_ham.pdf"
 
+ham_types = ["TfIsing", "Heisenberg", "J1J2", "tV", "Hubbard", "Impurity"]
 lat_types = {
     "chain": "a",
     "rectangular": "b",
@@ -27,15 +28,22 @@ lat_types = {
     "kagome": "d",
     "square_kagome": "e",
     "pyrochlore": "f",
+    "bethe": "h",
 }
 
-v_score_exact = 1e-15
+v_score_exact_threshold = 1e-12
+v_score_exact_pos = 1e-15
 
 
 def get_aspect(ham_param):
+    match = re.compile(r"square_(\d+)_[AOP]").match(ham_param)
+    if match:
+        return 1, 1
+
     match = re.compile(r"_(\d+)x(\d+)_").search(ham_param)
     if not match:
         raise ValueError(f"Failed to parse aspect ratio: {ham_param}")
+
     x = int(match.group(1))
     y = int(match.group(2))
     if x > y:
@@ -46,14 +54,20 @@ def get_aspect(ham_param):
     return x, y
 
 
-def get_boundaries(ham_param):
+def get_boundaries(ham_attr):
+    ham_type, ham_param = ham_attr
+    if ham_type == "Impurity":
+        return "  "
+
     match = re.compile(r"_([AOP]+)_").search(ham_param)
     if not match:
         raise ValueError(f"Failed to parse boundaries: {ham_param}")
     s = match.group(1)
-    s = "".join(sorted(s))
+
+    s = "".join(sorted(s, reverse=True))
     if all(c == s[0] for c in s):
         s = s[0] + " "
+
     return s
 
 
@@ -68,12 +82,12 @@ def get_extra_param(ham_param):
 def get_key(row):
     ham_type, ham_param, _, _, _, dof, _ = row
     lattice = get_lattice((ham_type, ham_param))
-    if lattice == "rectangular":
+    if lattice in ["rectangular", "square_diagonal"]:
         aspect = get_aspect(ham_param)
     else:
         aspect = (1, 1)
-    boundaries = get_boundaries(ham_param)
-    if ham_type in ["TfIsing", "J1J2", "Hubbard"]:
+    boundaries = get_boundaries((ham_type, ham_param))
+    if ham_type in ["TfIsing", "J1J2", "Hubbard", "tV"]:
         extra_param = get_extra_param(ham_param)
     else:
         extra_param = ""
@@ -86,13 +100,29 @@ def ham_attr_key(ham_attr):
         ham_types.index(ham_type),
         list(lat_types).index(lattice),
         aspect[0] / aspect[1],
-        "OAP".index(boundaries[0]),
+        ["  ", "O ", "PO", "P ", "PA"].index(boundaries),
     )
+
+
+def get_ax_left_yticks(ham_attrs):
+    last_i = 0
+    last_ham_type = None
+    yticks = []
+    for i, ham_attr in enumerate(ham_attrs):
+        ham_type = ham_attr[0]
+        if last_ham_type is None:
+            last_ham_type = ham_type
+        if ham_type != last_ham_type:
+            yticks.append((last_i + i - 1) / 2)
+            last_i = i
+            last_ham_type = ham_type
+    yticks.append((last_i + i) / 2)
+    return yticks
 
 
 def show_ham_attr(ham_attr):
     _, lattice, aspect, boundaries = ham_attr
-    if lattice == "rectangular":
+    if aspect != (1, 1):
         aspect = f"{aspect[0]}:{aspect[1]}"
         # aspect = aspect.replace("1:8", "⅛")
         # aspect = aspect.replace("1:4", "¼")
@@ -116,7 +146,7 @@ def main():
 
         energy = row[3]
         key = get_key(row)
-        v_score = get_v_score(row, v_score_exact)
+        v_score = get_v_score(row, v_score_exact_threshold, v_score_exact_pos)
 
         if key not in v_scores or energy < energies[key]:
             v_scores[key] = v_score
@@ -163,8 +193,9 @@ def main():
     ax.set_ylim(-1, y_max)
     ax2.set_ylim(-1, y_max)
     ax.set_xticks([1e-12, 1e-8, 1e-4])
-    ax.set_xticks([v_score_exact], minor=True)
-    ax.set_xticklabels(["exact"], minor=True, rotation=90)
+    ax.set_xticks([v_score_exact_pos], minor=True)
+    ax.set_xticklabels(["..."], minor=True)
+    ax.xaxis.set_tick_params(which="minor", pad=2)
     ax.spines.right.set_visible(False)
     ax2.spines.left.set_visible(False)
 
@@ -223,9 +254,13 @@ def main():
     ax_left.yaxis.set_ticks_position("left")
     ax_left.yaxis.set_tick_params(length=0)
     ax_left.set_ylim(-1, y_max)
-    ax_left.set_yticks([1, 7, 12, 17])
+    yticks = get_ax_left_yticks(ham_attrs)
+    yticks[3] += 1
+    yticks[4] -= 1
+    yticks[5] -= 1
+    ax_left.set_yticks(yticks)
     ax_left.set_yticklabels(
-        ["TFIsing", "Heisenberg", "J1-J2", "Hubbard"],
+        ["TFIM", "Heisenberg", "$J_1$-$J_2$", "$t$-$V$", "Hubbard", "Impurity"],
         horizontalalignment="center",
         rotation=90,
         rotation_mode="anchor",

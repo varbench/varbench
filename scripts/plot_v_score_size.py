@@ -16,7 +16,8 @@ from plot_v_score_ham import get_key
 
 out_filename = "./v_score_size.pdf"
 
-v_score_exact = 1e-15
+v_score_exact_threshold = 1e-12
+v_score_exact_pos = 1e-15
 
 
 def main():
@@ -33,7 +34,7 @@ def main():
 
         energy = row[3]
         key = get_key(row)
-        v_score = get_v_score(row, v_score_exact)
+        v_score = get_v_score(row, v_score_exact_threshold, v_score_exact_pos)
 
         if key not in v_scores or energy < energies[key]:
             v_scores[key] = v_score
@@ -88,8 +89,9 @@ def main():
     ax.set_ylim(6.5e0, 1.3e3)
     ax2.set_ylim(6.5e0, 1.3e3)
     ax.set_xticks([1e-12, 1e-8, 1e-4])
-    ax.set_xticks([v_score_exact], minor=True)
-    ax.set_xticklabels(["exact"], minor=True, rotation=90)
+    ax.set_xticks([v_score_exact_pos], minor=True)
+    ax.set_xticklabels(["..."], minor=True)
+    ax.xaxis.set_tick_params(which="minor", pad=2)
     ax.set_yticks([1e1, 1e2, 1e3])
     ax2.set_yticks([1e1, 1e2, 1e3])
     ax.spines.right.set_visible(False)

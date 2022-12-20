@@ -7,17 +7,13 @@ from matplotlib import pyplot as plt
 from matplotlib.gridspec import GridSpec
 
 from collect import data_key, filter_energy_var, get_data, known_tags
-from plot_v_score import (
-    check_exact_energy,
-    get_exact_energies,
-    get_v_score,
-    ham_colors,
-)
+from plot_v_score import check_exact_energy, get_exact_energies, get_v_score, ham_colors
 from plot_v_score_ham import get_lattice, lat_types
 
 out_filename = "./v_score_method.pdf"
 
-v_score_exact = 1e-15
+v_score_exact_threshold = 1e-12
+v_score_exact_pos = 1e-15
 
 
 def show_tag(tag_lat):
@@ -39,7 +35,7 @@ def main():
             continue
 
         tag = row[6]
-        if not tag:
+        if tag == "exact_qmc":
             continue
         if tag in ["rbm", "rnn"]:
             tag = "nqs"
@@ -48,7 +44,7 @@ def main():
         lattice = get_lattice(ham_attr)
         if lattice == "rectangular":
             lattice = "square"
-        v_score = get_v_score(row, v_score_exact)
+        v_score = get_v_score(row, v_score_exact_threshold, v_score_exact_pos)
         data_new.append((row[0], (tag, lattice), v_score))
     data = data_new
 
@@ -96,8 +92,9 @@ def main():
     ax.set_ylim(-1, y_max)
     ax2.set_ylim(-1, y_max)
     ax.set_xticks([1e-12, 1e-8, 1e-4])
-    ax.set_xticks([v_score_exact], minor=True)
-    ax.set_xticklabels(["exact"], minor=True, rotation=90)
+    ax.set_xticks([v_score_exact_pos], minor=True)
+    ax.set_xticklabels(["..."], minor=True)
+    ax.xaxis.set_tick_params(which="minor", pad=2)
     ax.spines.right.set_visible(False)
     ax2.spines.left.set_visible(False)
 

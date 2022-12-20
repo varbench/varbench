@@ -19,10 +19,12 @@ plt.rcParams["mathtext.fontset"] = "stix"
 out_filename = "./v_score.pdf"
 
 ham_colors = {
-    "TfIsing": "#7F1900",
-    "Heisenberg": "#B99232",
-    "J1J2": "#61BDD3",
-    "Hubbard": "#2F5EAC",
+    "TfIsing": "#A90058",
+    "Heisenberg": "#A58200",
+    "J1J2": "#8BA400",
+    "Hubbard": "#00A490",
+    "tV": "#00537C",
+    "Impurity": "#6101AB",
 }
 
 lat_markers = {
@@ -35,25 +37,30 @@ lat_markers = {
     "kagome": ("kagome", 11),
     "square_kagome": ("square_kagome", 11),
     "pyrochlore": ("pyrochlore", 11),
+    "bethe": ("bethe", 8),
 }
 
-v_score_exact = 2e-13
+v_score_exact_threshold = 1e-12
+v_score_exact_pos = 2e-13
 
 
 def get_exact_energies(data):
     out = {}
     for row in data:
-        if row[6] == "ed":
+        tag = row[6]
+        if tag in ["ed", "exact_qmc"]:
             ham_attr = row[:2]
             if ham_attr in out:
                 print(f"Warning: Duplicate exact result: {ham_attr}")
                 continue
-            out[ham_attr] = row[3]
+
+            energy = row[3]
+            out[ham_attr] = (energy, tag)
     return out
 
 
 def get_ulp(x):
-    s = "{:.16g}".format(x)
+    s = f"{x:.16g}"
     i = s.find(".")
     if i == -1:
         return 1
@@ -69,7 +76,7 @@ def check_exact_energy(exact_energies, row):
     energy = row[3]
     tag = row[6]
     energy_ulp = get_ulp(energy)
-    exact_energy = exact_energies[ham_attr]
+    exact_energy, _ = exact_energies[ham_attr]
     exact_ulp = get_ulp(exact_energy)
     if energy + energy_ulp < exact_energy - exact_ulp:
         print("Warning: Lower than exact energy:", row)
@@ -78,7 +85,7 @@ def check_exact_energy(exact_energies, row):
         if tag != "mps":
             return True
     elif energy - energy_ulp < exact_energy + exact_ulp:
-        print("Warning: Equal to exact energy within reported precision:", row)
+        print("Info: Equal to exact energy within reported precision:", row)
     return False
 
 
@@ -88,32 +95,32 @@ def get_hubbard_energy_inf(ham_param):
             ham_param
         )
         if match:
-            V = int(match.group(1))
+            N_s = int(match.group(1))
             N_up = float(match.group(2))
             N_down = float(match.group(3))
             U = float(match.group(4))
-            return U * N_up * N_down / V
+            return U * N_up * N_down / N_s
 
-        match = re.compile(r"square_(\d+)_[AOP][AOP]_(\d+)_(\d+)_([.\d]+)").fullmatch(
-            ham_param
-        )
+        match = re.compile(
+            r"square_(\d+)_[AOP][AOP]_(\d+)_(\d+)_([.\d]+)(_t12)?"
+        ).fullmatch(ham_param)
         if match:
             L = int(match.group(1))
             N_up = float(match.group(2))
             N_down = float(match.group(3))
             U = float(match.group(4))
-            V = L**2
-            return U * N_up * N_down / V
+            N_s = L**2
+            return U * N_up * N_down / N_s
 
         match = re.compile(
             r"square_sqrt(\d+)_[AOP][AOP]_(\d+)_(\d+)_([.\d]+)"
         ).fullmatch(ham_param)
         if match:
-            V = int(match.group(1))
+            N_s = int(match.group(1))
             N_up = float(match.group(2))
             N_down = float(match.group(3))
             U = float(match.group(4))
-            return U * N_up * N_down / V
+            return U * N_up * N_down / N_s
 
         match = re.compile(
             r"rectangular_(\d+)x(\d+)_[AOP][AOP]_(\d+)_(\d+)_([.\d]+)"
@@ -124,8 +131,8 @@ def get_hubbard_energy_inf(ham_param):
             N_up = float(match.group(3))
             N_down = float(match.group(4))
             U = float(match.group(5))
-            V = L_x * L_y
-            return U * N_up * N_down / V
+            N_s = L_x * L_y
+            return U * N_up * N_down / N_s
 
     except ValueError:
         pass
@@ -135,25 +142,56 @@ def get_hubbard_energy_inf(ham_param):
     return 0
 
 
-def get_v_score(row, exact):
+def get_tV_energy_inf(ham_param):
+    try:
+        match = re.compile(r"chain_(\d+)_P_(\d+)_([.\d]+)").fullmatch(ham_param)
+        if match:
+            N_s = int(match.group(1))
+            N_f = float(match.group(2))
+            V = float(match.group(3))
+            N_e = N_s
+            return (V * N_e * N_f * (N_f - 1)) / (N_s * (N_s - 1))
+
+        match = re.compile(r"square_(\d+)_PP_(\d+)_([.\d]+)").fullmatch(ham_param)
+        if match:
+            L = int(match.group(1))
+            N_f = float(match.group(2))
+            V = float(match.group(3))
+            N_s = L**2
+            N_e = N_s * 2
+            return (V * N_e * N_f * (N_f - 1)) / (N_s * (N_s - 1))
+
+    except ValueError:
+        pass
+
+    print(f"Warning: Failed to parse t-V param: {ham_param}")
+    return 0
+
+
+def get_v_score(row, exact_threshold, exact_pos):
     ham_type, ham_param, _, energy, energy_var, dof, _ = row
 
     if ham_type == "Hubbard":
         energy_inf = get_hubbard_energy_inf(ham_param)
+    elif ham_type == "tV":
+        energy_inf = get_tV_energy_inf(ham_param)
     else:
         energy_inf = 0
 
     v_score = dof * energy_var / (energy - energy_inf) ** 2
 
     # Use a small value to show that the VMC energy reaches the machine precision
-    if v_score < exact:
-        v_score = exact
+    if v_score < exact_threshold:
+        v_score = exact_pos
 
     return v_score
 
 
 def get_lattice(ham_attr):
     ham_type, ham_param = ham_attr
+    if ham_type == "Impurity":
+        return "bethe"
+
     match = re.compile(r"([a-z]+(_[a-z]+)*)_").match(ham_param)
     if match:
         lattice = match.group(1)
@@ -163,13 +201,15 @@ def get_lattice(ham_attr):
     else:
         print(f"Warning: Failed to parse lattice name: {ham_param}")
         lattice = "_default"
-    if ham_type == "J1J2" and lattice == "square":
+
+    if ham_type == "J1J2" and lattice in ["square", "rectangular"]:
         lattice = "square_diagonal"
+
     return lattice
 
 
 def get_path(marker):
-    if marker == "o":
+    if marker in ["o", "o_empty"]:
         return marker
 
     _, attributes = svg2paths(f"icons/{marker}.svg")
@@ -192,17 +232,51 @@ def get_marker(ham_attr):
     return _get_marker(ham_type, lattice)
 
 
-def get_legend(skip=()):
+def get_plot_kwargs(color, marker, size, bold):
+    if marker == "o_empty":
+        marker = "o"
+        if bold:
+            return dict(
+                linestyle="",
+                marker=marker,
+                markeredgecolor=color,
+                markeredgewidth=1.6,
+                markerfacecolor="none",
+                markersize=size,
+            )
+        else:
+            return dict(
+                linestyle="",
+                marker=marker,
+                markeredgecolor=color,
+                markeredgewidth=0.8,
+                markerfacecolor="none",
+                markersize=size,
+            )
+    else:
+        if bold:
+            return dict(
+                linestyle="",
+                marker=marker,
+                markeredgecolor=color,
+                markeredgewidth=1,
+                markerfacecolor=color,
+                markersize=size,
+            )
+        else:
+            return dict(
+                linestyle="",
+                marker=marker,
+                markeredgewidth=0,
+                markerfacecolor=color,
+                markersize=size,
+            )
+
+
+def get_legend(skip=(), impurity=True):
     def _Line2D(label, color, marker, size):
         return Line2D(
-            [0],
-            [0],
-            label=label,
-            linestyle="",
-            marker=marker,
-            markeredgewidth=0,
-            markerfacecolor=color,
-            markersize=size,
+            [0], [0], label=label, **get_plot_kwargs(color, marker, size, bold=False)
         )
 
     empty = _Line2D("", "none", "o", 0)
@@ -213,14 +287,19 @@ def get_legend(skip=()):
             continue
         name = name.replace("_", " ")
         marker = get_path(marker)
-        legend_lats.append(_Line2D(name, "k", marker, size))
+        legend_lats.append(_Line2D(name.capitalize(), "k", marker, size))
 
     legend_hams = [
-        _Line2D("TFIsing", ham_colors["TfIsing"], "o", 8),
+        _Line2D("TFIM", ham_colors["TfIsing"], "o", 8),
         _Line2D("Heisenberg", ham_colors["Heisenberg"], "o", 8),
-        _Line2D("J1-J2", ham_colors["J1J2"], "o", 8),
+        _Line2D("$J_1$-$J_2$", ham_colors["J1J2"], "o", 8),
         _Line2D("Hubbard", ham_colors["Hubbard"], "o", 8),
+        _Line2D("$t$-$V$", ham_colors["tV"], "o", 8),
+        _Line2D("Impurity", ham_colors["Impurity"], "o", 8),
     ]
+
+    if not impurity:
+        legend_hams = legend_hams[:-1]
 
     if len(legend_lats) < len(legend_hams):
         legend_lats += [empty] * (len(legend_hams) - len(legend_lats))
@@ -247,7 +326,7 @@ def main():
 
         ham_attr = row[:2]
         energy = row[3]
-        v_score = get_v_score(row, v_score_exact)
+        v_score = get_v_score(row, v_score_exact_threshold, v_score_exact_pos)
         if ham_attr not in v_scores or energy < energies[ham_attr]:
             v_scores[ham_attr] = v_score
             energies[ham_attr] = energy
@@ -268,32 +347,16 @@ def main():
     idx_hams = {v: k for k, v in ham_idxs.items()}
     x_max = len(ham_idxs)
 
-    fig, ax = plt.subplots(figsize=(16, 9))
+    fig, ax = plt.subplots(figsize=(21, 9))
 
     for (ham_type, ham_param, _, v_score), (color, marker, size) in zip(data, markers):
         ham_attr = ham_type, ham_param
         idx = ham_idxs[ham_attr]
-        if v_score == v_scores[ham_attr]:
-            ax.plot(
-                idx,
-                v_score,
-                linestyle="",
-                marker=marker,
-                markeredgecolor=color,
-                markeredgewidth=1,
-                markerfacecolor=color,
-                markersize=size,
-            )
-        else:
-            ax.plot(
-                idx,
-                v_score,
-                linestyle="",
-                marker=marker,
-                markeredgewidth=0,
-                markerfacecolor=color,
-                markersize=size,
-            )
+        ax.plot(
+            idx,
+            v_score,
+            **get_plot_kwargs(color, marker, size, bold=v_score == v_scores[ham_attr]),
+        )
 
     for i in range(x_max // 2 + 1):
         ax.axvspan(i * 2 - 0.5, i * 2 + 0.5, color="0.95", zorder=0.3)
@@ -302,17 +365,31 @@ def main():
     ax.set_xlim([-1, x_max])
     ax.set_yscale("log")
 
+    def get_label(ham_attr):
+        _, ham_param = ham_attr
+        prefix = "  "
+        if ham_attr in exact_energies:
+            _, tag = exact_energies[ham_attr]
+            if tag == "ed":
+                prefix = "+ "
+            elif tag == "exact_qmc":
+                prefix = "* "
+        label = prefix + ham_param
+        return label
+
     ax.set_xticks(range(x_max))
     ax.xaxis.tick_top()
     ax.xaxis.set_tick_params(length=0)
     ax.set_xticklabels(
-        [idx_hams[i][1] for i in range(x_max)], fontfamily="monospace", rotation=90
+        [get_label(idx_hams[i]) for i in range(x_max)],
+        fontfamily="monospace",
+        rotation=90,
     )
     for i, text in enumerate(ax.get_xticklabels()):
         text.set_color(ham_colors[idx_hams[i][0]])
 
-    ax.set_yticks([v_score_exact], minor=True)
-    ax.set_yticklabels(["exact"], minor=True)
+    ax.set_yticks([v_score_exact_pos], minor=True)
+    ax.set_yticklabels(["..."], minor=True, rotation=90)
 
     ax.grid(axis="y", color="0.8", linestyle="--", zorder=0.4)
     ax.legend(
@@ -320,6 +397,7 @@ def main():
         ncol=2,
         fontsize="xx-large",
         # markerscale=2,
+        handlelength=1,
         columnspacing=1,
     )
     fig.tight_layout()
