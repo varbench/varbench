@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import re
+from math import nan
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -22,8 +23,8 @@ ham_colors = {
     "TfIsing": "#A90058",
     "Heisenberg": "#A58200",
     "J1J2": "#8BA400",
-    "Hubbard": "#00A490",
-    "tV": "#00537C",
+    "tV": "#00A490",
+    "Hubbard": "#006595",
     "Impurity": "#6101AB",
 }
 
@@ -47,7 +48,7 @@ v_score_exact_pos = 2e-13
 def get_exact_energies(data):
     out = {}
     for row in data:
-        tag = row[6]
+        tag = row[7]
         if tag in ["ed", "exact_qmc"]:
             ham_attr = row[:2]
             if ham_attr in out:
@@ -74,7 +75,7 @@ def check_exact_energy(exact_energies, row):
         return False
 
     energy = row[3]
-    tag = row[6]
+    tag = row[7]
     energy_ulp = get_ulp(energy)
     exact_energy, _ = exact_energies[ham_attr]
     exact_ulp = get_ulp(exact_energy)
@@ -89,62 +90,32 @@ def check_exact_energy(exact_energies, row):
     return False
 
 
-def get_hubbard_energy_inf(ham_param):
+def get_dof(ham_attr):
+    ham_type, ham_param = ham_attr
+    if ham_type == "Hubbard":
+        pattern = r"[OP]_(\d+)_(\d+)"
+    else:
+        pattern = r"[OP]_(\d+)"
+    match = re.compile(pattern).search(ham_param)
+    if not match:
+        print(f"Warning: Failed to parse DOF: {ham_attr}")
+        return nan
+
     try:
-        match = re.compile(r"chain_(\d+)_[OP]_(\d+)_(\d+)_([.\d]+)").fullmatch(
-            ham_param
-        )
-        if match:
-            N_s = int(match.group(1))
-            N_up = float(match.group(2))
-            N_down = float(match.group(3))
-            U = float(match.group(4))
-            return U * N_up * N_down / N_s
-
-        match = re.compile(
-            r"square_(\d+)_[AOP][AOP]_(\d+)_(\d+)_([.\d]+)(_t12)?"
-        ).fullmatch(ham_param)
-        if match:
-            L = int(match.group(1))
-            N_up = float(match.group(2))
-            N_down = float(match.group(3))
-            U = float(match.group(4))
-            N_s = L**2
-            return U * N_up * N_down / N_s
-
-        match = re.compile(
-            r"square_sqrt(\d+)_[AOP][AOP]_(\d+)_(\d+)_([.\d]+)"
-        ).fullmatch(ham_param)
-        if match:
-            N_s = int(match.group(1))
-            N_up = float(match.group(2))
-            N_down = float(match.group(3))
-            U = float(match.group(4))
-            return U * N_up * N_down / N_s
-
-        match = re.compile(
-            r"rectangular_(\d+)x(\d+)_[AOP][AOP]_(\d+)_(\d+)_([.\d]+)"
-        ).fullmatch(ham_param)
-        if match:
-            L_x = int(match.group(1))
-            L_y = int(match.group(2))
-            N_up = float(match.group(3))
-            N_down = float(match.group(4))
-            U = float(match.group(5))
-            N_s = L_x * L_y
-            return U * N_up * N_down / N_s
-
+        if ham_type == "Hubbard":
+            dof = int(match.group(1)) + int(match.group(2))
+        else:
+            dof = int(match.group(1))
     except ValueError:
-        pass
+        print(f"Warning: Failed to parse DOF: {ham_attr}")
+        return nan
 
-    # TODO: Support Imada's extra parameters
-    print(f"Warning: Failed to parse Hubbard param: {ham_param}")
-    return 0
+    return dof
 
 
 def get_tV_energy_inf(ham_param):
     try:
-        match = re.compile(r"chain_(\d+)_P_(\d+)_([.\d]+)").fullmatch(ham_param)
+        match = re.compile(r"chain_(\d+)_P_(\d+)_([-.\d]+)").fullmatch(ham_param)
         if match:
             N_s = int(match.group(1))
             N_f = float(match.group(2))
@@ -152,7 +123,7 @@ def get_tV_energy_inf(ham_param):
             N_e = N_s
             return (V * N_e * N_f * (N_f - 1)) / (N_s * (N_s - 1))
 
-        match = re.compile(r"square_(\d+)_PP_(\d+)_([.\d]+)").fullmatch(ham_param)
+        match = re.compile(r"square_(\d+)_PP_(\d+)_([-.\d]+)").fullmatch(ham_param)
         if match:
             L = int(match.group(1))
             N_f = float(match.group(2))
@@ -168,16 +139,80 @@ def get_tV_energy_inf(ham_param):
     return 0
 
 
-def get_v_score(row, exact_threshold, exact_pos):
-    ham_type, ham_param, _, energy, energy_var, dof, _ = row
+def get_hubbard_energy_inf(ham_param):
+    try:
+        match = re.compile(r"chain_(\d+)_[OP]_(\d+)_(\d+)_([-.\d]+)").fullmatch(
+            ham_param
+        )
+        if match:
+            N_s = int(match.group(1))
+            N_up = float(match.group(2))
+            N_down = float(match.group(3))
+            U = float(match.group(4))
+            return U * N_up * N_down / N_s
 
-    if ham_type == "Hubbard":
-        energy_inf = get_hubbard_energy_inf(ham_param)
-    elif ham_type == "tV":
-        energy_inf = get_tV_energy_inf(ham_param)
+        match = re.compile(
+            r"square_(\d+)_[AOP][AOP]_(\d+)_(\d+)_([-.\d]+)(_t12)?(_UV1V2)?"
+        ).fullmatch(ham_param)
+        if match:
+            L = int(match.group(1))
+            N_up = float(match.group(2))
+            N_down = float(match.group(3))
+            U = float(match.group(4))
+            N_s = L**2
+
+            if match.group(6):
+                # Imada's result with V1 = 1, V2 = 0.5
+                V = 1.5
+                N_e = N_s * 2
+                N_f = N_up + N_down
+                energy_inf = U * N_up * N_down / N_s
+                energy_inf += (V * N_e * N_f * (N_f - 1)) / (N_s * (N_s - 1))
+                return energy_inf
+            else:
+                return U * N_up * N_down / N_s
+
+        match = re.compile(
+            r"square_sqrt(\d+)_[AOP][AOP]_(\d+)_(\d+)_([-.\d]+)"
+        ).fullmatch(ham_param)
+        if match:
+            N_s = int(match.group(1))
+            N_up = float(match.group(2))
+            N_down = float(match.group(3))
+            U = float(match.group(4))
+            return U * N_up * N_down / N_s
+
+        match = re.compile(
+            r"rectangular_(\d+)x(\d+)_[AOP][AOP]_(\d+)_(\d+)_([-.\d]+)"
+        ).fullmatch(ham_param)
+        if match:
+            L_x = int(match.group(1))
+            L_y = int(match.group(2))
+            N_up = float(match.group(3))
+            N_down = float(match.group(4))
+            U = float(match.group(5))
+            N_s = L_x * L_y
+            return U * N_up * N_down / N_s
+
+    except ValueError:
+        pass
+
+    print(f"Warning: Failed to parse Hubbard param: {ham_param}")
+    return 0
+
+
+def get_energy_inf(ham_attr):
+    ham_type, ham_param = ham_attr
+    if ham_type == "tV":
+        return get_tV_energy_inf(ham_param)
+    elif ham_type == "Hubbard":
+        return get_hubbard_energy_inf(ham_param)
     else:
-        energy_inf = 0
+        return 0
 
+
+def get_v_score(row, exact_threshold, exact_pos):
+    ham_type, ham_param, _, energy, energy_var, dof, energy_inf, _ = row
     v_score = dof * energy_var / (energy - energy_inf) ** 2
 
     # Use a small value to show that the VMC energy reaches the machine precision
@@ -185,6 +220,18 @@ def get_v_score(row, exact_threshold, exact_pos):
         v_score = exact_pos
 
     return v_score
+
+
+def sort_v_scores(v_scores):
+    ham_idxs = {}
+    idxs = np.argsort([x[1] for x in v_scores.items()])
+    ranks = [None] * idxs.size
+    for i in range(idxs.size):
+        ranks[idxs[i]] = i
+    for (ham_attr, _), idx in zip(v_scores.items(), ranks):
+        ham_idxs[ham_attr] = idx
+    idx_hams = {v: k for k, v in ham_idxs.items()}
+    return ham_idxs, idx_hams
 
 
 def get_lattice(ham_attr):
@@ -273,6 +320,19 @@ def get_plot_kwargs(color, marker, size, bold):
             )
 
 
+def get_exact_marker(exact_energies, ham_attr):
+    _, ham_param = ham_attr
+    prefix = "  "
+    if ham_attr in exact_energies:
+        _, tag = exact_energies[ham_attr]
+        if tag == "ed":
+            prefix = "+ "
+        elif tag == "exact_qmc":
+            prefix = "* "
+    label = prefix + ham_param
+    return label
+
+
 def get_legend(skip=(), impurity=True):
     def _Line2D(label, color, marker, size):
         return Line2D(
@@ -293,8 +353,8 @@ def get_legend(skip=(), impurity=True):
         _Line2D("TFIM", ham_colors["TfIsing"], "o", 8),
         _Line2D("Heisenberg", ham_colors["Heisenberg"], "o", 8),
         _Line2D("$J_1$-$J_2$", ham_colors["J1J2"], "o", 8),
-        _Line2D("Hubbard", ham_colors["Hubbard"], "o", 8),
         _Line2D("$t$-$V$", ham_colors["tV"], "o", 8),
+        _Line2D("Hubbard", ham_colors["Hubbard"], "o", 8),
         _Line2D("Impurity", ham_colors["Impurity"], "o", 8),
     ]
 
@@ -337,14 +397,7 @@ def main():
     data = data_new
     print(tabulate(data, tablefmt="plain"))
 
-    ham_idxs = {}
-    idxs = np.argsort([x[1] for x in v_scores.items()])
-    ranks = [None] * idxs.size
-    for i in range(idxs.size):
-        ranks[idxs[i]] = i
-    for (ham_attr, _), idx in zip(v_scores.items(), ranks):
-        ham_idxs[ham_attr] = idx
-    idx_hams = {v: k for k, v in ham_idxs.items()}
+    ham_idxs, idx_hams = sort_v_scores(v_scores)
     x_max = len(ham_idxs)
 
     fig, ax = plt.subplots(figsize=(21, 9))
@@ -355,7 +408,9 @@ def main():
         ax.plot(
             idx,
             v_score,
-            **get_plot_kwargs(color, marker, size, bold=v_score == v_scores[ham_attr]),
+            **get_plot_kwargs(
+                color, marker, size, bold=(v_score == v_scores[ham_attr])
+            ),
         )
 
     for i in range(x_max // 2 + 1):
@@ -365,23 +420,11 @@ def main():
     ax.set_xlim([-1, x_max])
     ax.set_yscale("log")
 
-    def get_label(ham_attr):
-        _, ham_param = ham_attr
-        prefix = "  "
-        if ham_attr in exact_energies:
-            _, tag = exact_energies[ham_attr]
-            if tag == "ed":
-                prefix = "+ "
-            elif tag == "exact_qmc":
-                prefix = "* "
-        label = prefix + ham_param
-        return label
-
     ax.set_xticks(range(x_max))
     ax.xaxis.tick_top()
     ax.xaxis.set_tick_params(length=0)
     ax.set_xticklabels(
-        [get_label(idx_hams[i]) for i in range(x_max)],
+        [get_exact_marker(exact_energies, idx_hams[i]) for i in range(x_max)],
         fontfamily="monospace",
         rotation=90,
     )

@@ -34,7 +34,7 @@ def main():
         if check_exact_energy(exact_energies, row):
             continue
 
-        tag = row[6]
+        tag = row[7]
         if tag == "exact_qmc":
             continue
         if tag in ["rbm", "rnn"]:
@@ -62,7 +62,7 @@ def main():
         cs.append(ham_colors[ham_type])
 
     fig = plt.figure(figsize=(6, 4))
-    xlim1 = (1.5e-16, 6.5e-4)
+    xlim1 = (1e-16, 6.5e-4)
     xlim2 = (1.5e-4, 4.5e-1)
     gs = GridSpec(
         1,

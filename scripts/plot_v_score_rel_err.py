@@ -38,7 +38,7 @@ def main():
     data_new = []
     markers = []
     for row in data:
-        tag = row[6]
+        tag = row[7]
         if tag == "vafqmc":
             continue
 
@@ -179,7 +179,7 @@ def main():
     ax1.grid(color="0.8", linestyle="--", zorder=0.4)
     ax2.grid(color="0.8", linestyle="--", zorder=0.4)
     ax1.legend(
-        handles=get_legend(skip=("square_kagome",), impurity=False),
+        handles=get_legend(skip=("square_kagome", "bethe"), impurity=False),
         ncol=2,
         columnspacing=1,
     )

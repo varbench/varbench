@@ -45,8 +45,8 @@ def main():
         data.append((v_score, dof, _get_marker(ham_type, lattice)))
 
     fig = plt.figure(figsize=(6, 4))
-    xlim1 = (1.5e-16, 6.5e-4)
-    xlim2 = (1.5e-4, 3.5e-1)
+    xlim1 = (1e-16, 6.5e-4)
+    xlim2 = (1.5e-4, 1.5e-1)
     gs = GridSpec(
         1,
         2,
@@ -79,15 +79,15 @@ def main():
             )
 
     fig.supxlabel("V-score")
-    ax.set_ylabel("$N_\\mathrm{DOF}$")
+    ax.set_ylabel("$N$")
     ax.set_xscale("log")
     ax2.set_xscale("log")
     ax.set_yscale("log")
     ax2.set_yscale("log")
     ax.set_xlim(*xlim1)
     ax2.set_xlim(*xlim2)
-    ax.set_ylim(6.5e0, 1.3e3)
-    ax2.set_ylim(6.5e0, 1.3e3)
+    ax.set_ylim(6.5, 1.4e3)
+    ax2.set_ylim(6.5, 1.4e3)
     ax.set_xticks([1e-12, 1e-8, 1e-4])
     ax.set_xticks([v_score_exact_pos], minor=True)
     ax.set_xticklabels(["..."], minor=True)

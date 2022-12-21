@@ -11,7 +11,7 @@ from unidecode import unidecode
 from reader import read_file
 
 root = "../"
-ham_types = ["TfIsing", "Heisenberg", "J1J2", "Hubbard", "tV", "Impurity"]
+ham_types = ["TfIsing", "Heisenberg", "J1J2", "tV", "Hubbard", "Impurity"]
 known_tags = [
     "ed",
     "exact_qmc",
@@ -27,7 +27,7 @@ known_tags = [
     "afqmc",
     "pqc",
 ]
-required_fields = ["method", "energy", "energy variance", "dof"]
+required_fields = ["method", "energy", "energy variance", "dof", "einf"]
 
 
 # Sometimes there are special Unicode characters, so we normalize them
@@ -119,8 +119,7 @@ def parse_data(data, file_path, ham_attr):
 
         tag, method = find_tag(cols[field_indices["method"]])
 
-        energy = cols[field_indices["energy"]]
-        energy = parse_float(energy)
+        energy = parse_float(cols[field_indices["energy"]])
         if isnan(energy):
             warn("Failed to parse energy")
             continue
@@ -130,8 +129,7 @@ def parse_data(data, file_path, ham_attr):
         if energy > 0:
             warn("Positive energy")
 
-        energy_var = cols[field_indices["energy variance"]]
-        energy_var = parse_float(energy_var)
+        energy_var = parse_float(cols[field_indices["energy variance"]])
         # if isnan(energy_var):
         #     warn("Missing variance")
         # if energy_var == 0:
@@ -140,11 +138,12 @@ def parse_data(data, file_path, ham_attr):
         #     warn("Negative variance")
 
         dof = int(cols[field_indices["dof"]])
+        energy_inf = parse_float(cols[field_indices["einf"]])
 
-        data.append((*ham_attr, method, energy, energy_var, dof, tag))
+        data.append((*ham_attr, method, energy, energy_var, dof, energy_inf, tag))
 
 
-# (ham_type, ham_param, method, energy, energy_var, dof, tag)
+# (ham_type, ham_param, method, energy, energy_var, dof, energy_inf, tag)
 def get_data():
     data = []
     for _dir in os.scandir(root):
@@ -176,7 +175,7 @@ def filter_energy_var(data):
     out = []
     for row in data:
         energy_var = row[4]
-        tag = row[6]
+        tag = row[7]
         if isnan(energy_var):
             # if tag not in ["ed", "exact_qmc"]:
             #     print("Warning: Missing variance:", row)

@@ -7,7 +7,7 @@ from pathlib import Path
 from matplotlib import pyplot as plt
 from matplotlib.gridspec import GridSpec
 
-from collect import data_key, filter_energy_var, get_data
+from collect import data_key, filter_energy_var, get_data, ham_types
 from plot_v_score import (
     check_exact_energy,
     get_exact_energies,
@@ -18,7 +18,6 @@ from plot_v_score import (
 
 out_filename = "./v_score_ham.pdf"
 
-ham_types = ["TfIsing", "Heisenberg", "J1J2", "tV", "Hubbard", "Impurity"]
 lat_types = {
     "chain": "a",
     "rectangular": "b",
@@ -80,14 +79,14 @@ def get_extra_param(ham_param):
 
 
 def get_key(row):
-    ham_type, ham_param, _, _, _, dof, _ = row
+    ham_type, ham_param, _, _, _, dof, _, _ = row
     lattice = get_lattice((ham_type, ham_param))
     if lattice in ["rectangular", "square_diagonal"]:
         aspect = get_aspect(ham_param)
     else:
         aspect = (1, 1)
     boundaries = get_boundaries((ham_type, ham_param))
-    if ham_type in ["TfIsing", "J1J2", "Hubbard", "tV"]:
+    if ham_type in ["TfIsing", "J1J2", "tV", "Hubbard"]:
         extra_param = get_extra_param(ham_param)
     else:
         extra_param = ""
@@ -163,8 +162,8 @@ def main():
         cs.append(ham_colors[ham_attr[0]])
 
     fig = plt.figure(figsize=(6, 4))
-    xlim1 = (1.5e-16, 6.5e-4)
-    xlim2 = (1.5e-4, 3.5e-1)
+    xlim1 = (1e-16, 6.5e-4)
+    xlim2 = (1.5e-4, 1.5e-1)
     gs = GridSpec(
         1,
         2,
