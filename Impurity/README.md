@@ -6,7 +6,7 @@ $$\hat{H}_\text{A} = \hat{H}_\text{loc} + \hat{H}_\text{bath},$$
 
 $$\hat{H}_\text{loc} = \sum_{\\{\alpha\\}} \epsilon^0_{\alpha_1 \alpha_2} \hat{d}^{\dagger}_{\alpha_1} \hat{d}_{\alpha_2} + \sum_{\\{\alpha\\}} U_{\alpha_1 \alpha_2 \alpha_3 \alpha_4} \hat{d}^{\dagger}_{\alpha_1} \hat{d}^{\dagger}_{\alpha_2} \hat{d}_{\alpha_3} \hat{d}_{\alpha_4},$$
 
-$$\hat{H}_\text{bath} = \sum_{\\{\alpha\\}, l = 1}^{l = N_b} \epsilon^l_{\alpha_1 \alpha_2} \hat{c}^{\dagger}_{l \alpha_1} \hat{c}_{l \alpha_2} + \sum_{\\{\alpha\\}, l = 1}^{l = N_b} \left( \nu^l_{\alpha_1 \alpha_2} \hat{d}^\dagger_{\alpha_1} \hat{c}_{l \alpha_2} + \text{h.c.} \right),$$
+$$\hat{H}_\text{bath} = \sum_{\\{\alpha\\}, l = 1}^{l = N_\text{b}} \epsilon^l_{\alpha_1 \alpha_2} \hat{c}^{\dagger}_{l \alpha_1} \hat{c}_{l \alpha_2} + \sum_{\\{\alpha\\}, l = 1}^{l = N_\text{b}} \left( \nu^l_{\alpha_1 \alpha_2} \hat{d}^\dagger_{\alpha_1} \hat{c}_{l \alpha_2} + \text{h.c.} \right),$$
 
 where a locally interacting impurity is coupled to a non-interacting bath. Here, we consider two types of interactions that are frequently encountered in DMFT calculations: the single-band Hubbard interaction
 
