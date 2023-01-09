@@ -1,5 +1,5 @@
 | Energy                | Sigma                    | Energy Variance          | DOF | Einf               | Method                                                       | Data Repository |
 |-----------------------|--------------------------|--------------------------|-----|--------------------|--------------------------------------------------------------|-----------------|
 | -27.340544159534836   |                          |                          | 13  | 0.8914285714285715 | Lanczos (Quspin + Scipy)                                     |                 |
-| -25.57498961901937307 | 7.023756247848547218e-05 | 1.726343795712455102e-03 | 13  | 0.8914285714285715 | VMC Determinant Slater-Jastrow (RBM) Ansatz with K=0 projections (symmetric wrt translations) |                 |
+| -27.34055285498830301 | 5.167570104402214540e-05 | 1.021123460754086199e-04 | 13  | 0.8914285714285715 | VMC Determinant Slater-Jastrow (RBM) Ansatz with K=0 projections (symmetric wrt translations) |                 |
 | -27.340544159534552   | 3.140774396539580678e-06 | 3.615214994693033564e-06 | 13  | 0.8914285714285715 | VMC Determinant Slater-Backflow-Jastrow (RBM) Ansatz with K=0 projections (symmetric wrt translations) |                 |
