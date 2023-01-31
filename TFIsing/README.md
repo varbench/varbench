@@ -9,6 +9,6 @@ It is assumed that the unit of energy is $V = 1$.
 
 The names of the data files follow the convention `lattice_N_Gamma.md`
 
-* `lattice` is the name of the lattice, also containing its extent, boundary conditions, and further information needed to specify the lattice. See `lattice.md` in the main repository for the convention and examples
+* `lattice` is the lattice geometry (see `lattice.md`)
 * `N` is the number of spins
 * `Gamma` is the transverse field $\Gamma$

@@ -7,9 +7,8 @@ It is assumed that the unit of energy is $t = 1$.
 
 ## Naming
 
-The names of the data files follow the convention `lattice_Nup_Ndown_U.md` in the canonical ensemble.
+The names of the data files follow the convention `lattice_Nup_U.md` in the canonical ensemble.
 
-* `lattice` is the name of the lattice, also containing its extent, boundary conditions, and further information needed to specify the lattice. See `lattice.md` in the main repository for the convention and examples
-* `Nup` is the number of electrons with up spin
-* `Ndown` is the number of electrons with down spin
+* `lattice` is the lattice geometry (see `lattice.md`)
+* `Nup` is the number of electrons with spin up, and we assume `Nup = Ndown`
 * `U` is the on-site interaction

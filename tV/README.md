@@ -9,6 +9,6 @@ It is assumed that the unit of energy is $t = 1$.
 
 The names of the data files follow the convention `lattice_Nf_V.md` in the canonical ensemble.
 
-* `lattice` is the name of the lattice, also containing its extent, boundary conditions, and further information needed to specify the lattice. See `lattice.md` in the main repository for the convention and examples
+* `lattice` is the lattice geometry (see `lattice.md`)
 * `Nf` is the number of spinless fermions
 * `V` is the repulsive interaction

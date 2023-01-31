@@ -25,15 +25,15 @@ $$\hat{H}_\text{PH} = -J \sum_{m' > m} \left( \hat{d}^\dagger_{m \uparrow} \hat{
 with $m \in \\{1, 2, 3\\}$ being the orbital index, and **DD**, **SF**, and **PH** denote the density-density, the spin-flip, and the pair-hopping interactions respectively.
 
 We have constructed the following models one might need to solve in typical DMFT calculations:
-(**SB_Imp**) single-band Anderson impurity model with a semielliptic spectral function, i.e., $-\frac{1}{\pi} \mathrm{Im} \Delta(\omega) = \frac{2}{\pi D} \sqrt{1 - \left( \frac{\omega}{D} \right)^2}$ with $D$ being the half-bandwidth and $U = D$;
-(**SB_DMFT_MT_HF**) DMFT metal solution of the single band Hubbard model on the Bethe lattice with $U = 2 D$ at half-filling $n = 1$ and
-(**SB_DMFT_MT_AHF**) doped case $n = 0.8$;
-(**SB_DMFT_MI_HF**) DMFT Mott-insulator solution of the single band Hubbard model on the Bethe lattice with $U = 4 D$ at half-filling $n = 1$;
-three-band models with Kanamori interaction $U = 2.3\ \text{eV}$ and $J = 0.4\ \text{eV}$ that are based on the material-realistic DMFT solutions of the archetypal Hund's metal Sr<sub>2</sub>RuO<sub>4</sub> in the $t_{2 g}$ subspace (**TB_DMFT_SOC**) with and (**TB_DMFT**) without spin-orbit coupling.
+(**SB-Imp**) single-band Anderson impurity model with a semielliptic spectral function, i.e., $-\frac{1}{\pi} \mathrm{Im} \Delta(\omega) = \frac{2}{\pi D} \sqrt{1 - \left( \frac{\omega}{D} \right)^2}$ with $D$ being the half-bandwidth and $U = D$;
+(**SB-DMFT-MT-HF**) DMFT metal solution of the single band Hubbard model on the Bethe lattice with $U = 2 D$ at half-filling $n = 1$ and
+(**SB-DMFT-MT-AHF**) doped case $n = 0.8$;
+(**SB-DMFT-MI-HF**) DMFT Mott-insulator solution of the single band Hubbard model on the Bethe lattice with $U = 4 D$ at half-filling $n = 1$;
+three-band models with Kanamori interaction $U = 2.3\ \text{eV}$ and $J = 0.4\ \text{eV}$ that are based on the material-realistic DMFT solutions of the archetypal Hund's metal Sr<sub>2</sub>RuO<sub>4</sub> in the $t_{2 g}$ subspace (**TB-DMFT-SOC**) with and (**TB-DMFT**) without spin-orbit coupling.
 
 # Naming
 
 The names of the data files follow the convention `model_Nb.md`
 
-* `model` is the name of the model
+* `model` is the name of the impurity model
 * `Nb` is the number of bath sites per spin-orbital

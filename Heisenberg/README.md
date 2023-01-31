@@ -9,5 +9,5 @@ It is assumed that the unit of energy is $J = 1$.
 
 The names of the data files follow the convention `lattice_N.md`
 
-* `lattice` is the name of the lattice, also containing its extent, boundary conditions, and further information needed to specify the lattice. See `lattice.md` in the main repository for the convention and examples
+* `lattice` is the lattice geometry (see `lattice.md`)
 * `N` is the number of spins
