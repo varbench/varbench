@@ -2,7 +2,7 @@
 
 import os
 import re
-from math import isnan, nan
+from math import floor, isnan, log10, nan
 
 from natsort import natsort_key
 from tabulate import tabulate
@@ -11,7 +11,7 @@ from unidecode import unidecode
 from reader import read_file
 
 root = "../"
-ham_types = ["TfIsing", "Heisenberg", "J1J2", "tV", "Hubbard", "Impurity"]
+ham_types = ["TFIsing", "Heisenberg", "J1J2", "tV", "Hubbard", "Impurity"]
 known_tags = [
     "ed",
     "exact_qmc",
@@ -27,7 +27,7 @@ known_tags = [
     "afqmc",
     "pqc",
 ]
-required_fields = ["method", "energy", "energy variance", "dof", "einf"]
+required_fields = ["energy", "sigma", "energy variance", "dof", "einf", "method"]
 
 
 # Sometimes there are special Unicode characters, so we normalize them
@@ -129,6 +129,17 @@ def parse_data(data, file_path, ham_attr):
         if energy > 0:
             warn("Positive energy")
 
+        sigma = parse_float(cols[field_indices["sigma"]])
+        if sigma < 0:
+            warn("Negative sigma")
+        # if sigma == 0:
+        #     warn("Zero sigma")
+        if sigma > 0:
+            # _sigma = sigma
+            sigma = 10 ** floor(log10(sigma))
+            energy = round(energy / sigma) * sigma
+            # print(f"{energy:.15g}", sigma, _sigma)
+
         energy_var = parse_float(cols[field_indices["energy variance"]])
         # if isnan(energy_var):
         #     warn("Missing variance")
@@ -174,17 +185,17 @@ def data_key(row):
 def filter_energy_var(data):
     out = []
     for row in data:
-        energy_var = row[4]
         tag = row[7]
+        if tag in ["ed", "exact_qmc"]:
+            continue
+
+        energy_var = row[4]
         if isnan(energy_var):
-            # if tag not in ["ed", "exact_qmc"]:
-            #     print("Warning: Missing variance:", row)
+            print("Warning: Missing variance:", row)
             continue
         if energy_var == 0:
-            if tag in ["ed", "exact_qmc"]:
-                continue
-            else:
-                print("Warning: Zero variance:", row)
+            print("Warning: Zero variance:", row)
+            continue
         if energy_var < 0:
             print("Warning: Negative variance:", row)
             continue

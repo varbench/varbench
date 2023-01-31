@@ -11,7 +11,7 @@ def main():
 
     out = []
     for row in data:
-        energy_per_dof = row[3] / row[5]
+        energy_per_dof = (row[3] - row[6]) / row[5]
         out.append((*row[:2], energy_per_dof, row[2]))
 
     print(tabulate(out, tablefmt="plain"))

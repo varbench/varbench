@@ -49,7 +49,7 @@ def main():
 
         method = row[2]
         # Skip some J2 values to make the plot not too crowded
-        if ham_type == "TfIsing":
+        if ham_type == "TFIsing":
             if "VQE" in method and method not in [
                 "VQE HV (d = 26)",
                 "VQE R-CX (d = 10)",
@@ -64,8 +64,9 @@ def main():
             continue
 
         energy = row[3]
+        energy_inf = row[6]
         exact_energy, _ = exact_energies[ham_attr]
-        energy_rel_err = (energy - exact_energy) / abs(exact_energy)
+        energy_rel_err = (energy - exact_energy) / (energy_inf - exact_energy)
         if energy_rel_err < 1e-7:
             continue
 
@@ -120,7 +121,7 @@ def main():
     data_pqc = [x for x in data if x[2] == "pqc"]
     xs_pqc = np.log([x[0] for x in data_pqc])
 
-    fig, ax1 = plt.subplots(figsize=(6, 4))
+    fig, ax1 = plt.subplots(figsize=(6 * 0.8, 4 * 0.8))
     ax2 = ax1.inset_axes([0.6, 0.1, 0.35, 0.35])
 
     v_min, v_max = get_padded_range(xs)
@@ -179,8 +180,10 @@ def main():
     ax1.grid(color="0.8", linestyle="--", zorder=0.4)
     ax2.grid(color="0.8", linestyle="--", zorder=0.4)
     ax1.legend(
-        handles=get_legend(skip=("square_kagome", "bethe"), impurity=False),
+        handles=get_legend(skip=("shuriken", "impurity"), impurity=False),
         ncol=2,
+        fontsize="small",
+        handletextpad=0.4,
         columnspacing=1,
     )
     fig.tight_layout()

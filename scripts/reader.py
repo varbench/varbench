@@ -8,7 +8,7 @@ tabulate.MIN_PADDING = 0
 # Dirty hack to set maximum width of columns
 dummy_wcwidth = SimpleNamespace(wcswidth=lambda x: (min(len(x), 60)))
 
-required_fields = ["method", "energy", "energy variance"]
+required_fields = ["energy", "energy variance", "method"]
 
 
 def split_cols(s):
