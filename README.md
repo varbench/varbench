@@ -1,4 +1,4 @@
-# Classical Variational Benchmarks for Digital Quantum Simulators
+# Variational Benchmarks for Quantum Many-Body Problems
 
 Benchmark data are presented in folders that correspond to different Hamiltonian types. For example, the folder `TFIsing` contains data for the transverse-field Ising model.
 
