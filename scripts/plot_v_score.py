@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import re
-from math import nan
+from math import log2, log10, nan
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -55,6 +55,10 @@ lat_types = {
 
 v_score_exact_threshold = 1e-12
 v_score_exact_pos = 2e-13
+
+
+def scale_doubly_log(x):
+    return -log2(-log10(x))
 
 
 def get_exact_energies(data):
@@ -335,7 +339,8 @@ def get_exact_marker(exact_energies, ham_attr):
 
 
 def get_legend(*, skip=(), impurity=True, explanation=False):
-    def _Line2D(label, color, marker, size):
+    def _Line2D(label, color, marker="o", size=8):
+        color = ham_colors.get(color, color)
         return Line2D(
             [0], [0], label=label, **get_plot_kwargs(color, marker, size, bold=False)
         )
@@ -351,39 +356,35 @@ def get_legend(*, skip=(), impurity=True, explanation=False):
 
     if explanation:
         legend_hams = [
-            _Line2D("TFIM ($N$_BC_$\\Gamma$)", ham_colors["TFIsing"], "o", 8),
-            _Line2D("Heisenberg ($N$_BC)", ham_colors["Heisenberg"], "o", 8),
-            _Line2D("$J_1$-$J_2$ ($N$_BC_$J_2$)", ham_colors["J1J2"], "o", 8),
-            _Line2D(
-                "$t$-$V$ ($N_\\mathrm{s}$_BC_$N_\\mathrm{f}$_$V$)",
-                ham_colors["tV"],
-                "o",
-                8,
-            ),
-            _Line2D(
-                "Hubbard ($N_\\mathrm{s}$_BC_$N_↑$_$U$)", ham_colors["Hubbard"], "o", 8
-            ),
-            _Line2D("Impurity (model_$N_\\mathrm{b}$)", ham_colors["Impurity"], "o", 8),
+            _Line2D("TFIM  ($N$_BC_$\\Gamma$)", "TFIsing"),
+            _Line2D("Heisenberg  ($N$_BC)", "Heisenberg"),
+            _Line2D("$J_1$-$J_2$  ($N$_BC_$J_2$)", "J1J2"),
+            _Line2D("$t$-$V$  ($N_\\mathrm{s}$_BC_$N_\\mathrm{f}$_$V$)", "tV"),
+            _Line2D("Hubbard  ($N_\\mathrm{s}$_BC_$N_↑$_$U$)", "Hubbard"),
+            _Line2D("Impurity  (model_$N_\\mathrm{b}$)", "Impurity"),
         ]
     else:
         legend_hams = [
-            _Line2D("TFIM", ham_colors["TFIsing"], "o", 8),
-            _Line2D("Heisenberg", ham_colors["Heisenberg"], "o", 8),
-            _Line2D("$J_1$-$J_2$", ham_colors["J1J2"], "o", 8),
-            _Line2D("$t$-$V$", ham_colors["tV"], "o", 8),
-            _Line2D("Hubbard", ham_colors["Hubbard"], "o", 8),
-            _Line2D("Impurity", ham_colors["Impurity"], "o", 8),
+            _Line2D("TFIM", "TFIsing"),
+            _Line2D("Heisenberg", "Heisenberg"),
+            _Line2D("$J_1$-$J_2$", "J1J2"),
+            _Line2D("$t$-$V$", "tV"),
+            _Line2D("Hubbard", "Hubbard"),
+            _Line2D("Impurity", "Impurity"),
         ]
 
     if not impurity:
         legend_hams = legend_hams[:-1]
 
-    if len(legend_lats) < len(legend_hams):
-        legend_lats += [empty] * (len(legend_hams) - len(legend_lats))
+    if explanation:
+        legend = legend_hams + [empty] + legend_lats
     else:
-        legend_hams += [empty] * (len(legend_lats) - len(legend_hams))
+        if len(legend_lats) < len(legend_hams):
+            legend_lats += [empty] * (len(legend_hams) - len(legend_lats))
+        else:
+            legend_hams += [empty] * (len(legend_lats) - len(legend_hams))
+        legend = legend_lats + legend_hams
 
-    legend = legend_lats + legend_hams
     return legend
 
 

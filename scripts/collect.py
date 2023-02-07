@@ -24,7 +24,7 @@ known_tags = [
     "vmc",
     "fn",
     "vafqmc",
-    "afqmc",
+    "qmc",
     "pqc",
 ]
 required_fields = ["energy", "sigma", "energy variance", "dof", "einf", "method"]
@@ -86,13 +86,14 @@ def find_tag(s, max_width=60):
         tag = "fn"
     elif "vafqmc" in s:
         tag = "vafqmc"
-    elif "afqmc" in s:
-        tag = "afqmc"
     elif "qmc" in s:
-        print("Info: Classify as exact QMC:", s)
-        # TODO: Currently this only matches QMC for Heisenberg square_10_OO_100,
-        # which is accurate enough to be considered exact
-        tag = "exact_qmc"
+        if s == "qmc (phys. rev. b 90, 064425)":
+            print("Info: Classify as exact QMC:", s)
+            # TODO: Currently this only matches QMC for Heisenberg square_10_OO_100,
+            # which is accurate enough to be considered exact
+            tag = "exact_qmc"
+        else:
+            tag = "qmc"
     elif "vqe" in s:
         tag = "pqc"
     else:
@@ -118,6 +119,8 @@ def parse_data(data, file_path, ham_attr):
             print(f"Warning: {msg}: {ham_attr + cols}")
 
         tag, method = find_tag(cols[field_indices["method"]])
+        if tag in ["fn", "qmc"]:
+            continue
 
         energy = parse_float(cols[field_indices["energy"]])
         if isnan(energy):
@@ -148,7 +151,7 @@ def parse_data(data, file_path, ham_attr):
         # if energy_var < 0:
         #     warn("Negative variance")
 
-        dof = int(cols[field_indices["dof"]])
+        dof = parse_float(cols[field_indices["dof"]])
         energy_inf = parse_float(cols[field_indices["einf"]])
 
         data.append((*ham_attr, method, energy, energy_var, dof, energy_inf, tag))

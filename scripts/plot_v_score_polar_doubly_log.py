@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from math import log10, pi
+from math import pi
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -16,13 +16,14 @@ from plot_v_score import (
     get_plot_kwargs,
     get_v_score,
     ham_colors,
+    scale_doubly_log,
     sort_v_scores,
 )
 
-out_filename = "./v_score_polar.pdf"
+out_filename = "./v_score_polar_doubly_log.pdf"
 
 v_score_exact_threshold = 1e-12
-v_score_exact_pos = 2e-13
+v_score_exact_pos = 1e-20
 theta0 = 0.5
 
 
@@ -58,21 +59,21 @@ def main():
     x_max += 4
     x_max = (x_max + 1) // 2 * 2
 
-    fig, ax = plt.subplots(figsize=(12, 12), subplot_kw={"projection": "polar"})
+    fig, ax = plt.subplots(figsize=(13, 12), subplot_kw={"projection": "polar"})
 
     for (ham_type, ham_param, _, v_score), (color, marker, size) in zip(data, markers):
         ham_attr = ham_type, ham_param
         idx = ham_idxs[ham_attr]
         ax.plot(
             (idx + theta0 + 0.5) / x_max * 2 * pi,
-            log10(v_score),
+            scale_doubly_log(v_score),
             **get_plot_kwargs(
                 color, marker, size, bold=(v_score == v_scores[ham_attr])
             ),
         )
 
     # Angular grid
-    for r in [-12, -10, -8, -6, -4, -2, 0]:
+    for r in [-4, -3, -2, -1, 0, 1]:
         thetas = np.linspace(
             theta0 / x_max * 2 * pi, (len(ham_idxs) + theta0) / x_max * 2 * pi, 360
         )
@@ -96,16 +97,16 @@ def main():
 
     # Meta arrow
     thetas = np.linspace(pi / 3, 2 / 3 * pi, 100)
-    r = -9
+    r = -3.5
     rs = r * np.ones_like(thetas)
     ax.plot(thetas, rs, color="k", linewidth=1)
     kwargs = dict(
-        length_includes_head=True, head_width=0.5, head_length=0.05, facecolor="k"
+        length_includes_head=True, head_width=0.2, head_length=0.05, facecolor="k"
     )
     ax.arrow(pi / 3, r, -0.01, 0, **kwargs)
     ax.arrow(2 / 3 * pi, r, 0.01, 0, **kwargs)
     ax.text(
-        pi / 3 - 0.15,
+        pi / 3 - 0.25,
         r,
         "Harder",
         fontsize="xx-large",
@@ -113,7 +114,7 @@ def main():
         verticalalignment="center",
     )
     ax.text(
-        2 / 3 * pi + 0.15,
+        2 / 3 * pi + 0.25,
         r,
         "Easier",
         fontsize="xx-large",
@@ -121,17 +122,16 @@ def main():
         verticalalignment="center",
     )
 
-    ax.set_ylim(-20, 0.5)
-    ax.set_yticks([-12, -10, -8, -6, -4, -2, 0])
+    ax.set_ylim(-6, 1.3)
+    ax.set_yticks([-4, -3, -2, -1, 0, 1])
     ax.set_yticklabels(
         [
-            "$10^{-12}$",
-            "$10^{-10}$",
+            "$< 10^{-16}$",
             "$10^{-8}$",
-            "$10^{-6}$",
             "$10^{-4}$",
             "$10^{-2}$",
-            "$10^{0}$",
+            "$10^{-1}$",
+            "$10^{-0.5}$",
         ],
         fontsize="large",
         horizontalalignment="center",
@@ -140,7 +140,7 @@ def main():
     ax.set_rlabel_position(0)
     ax.text(
         -6 / 360 * 2 * pi,
-        -6,
+        -1.5,
         "V-score",
         fontsize="x-large",
         horizontalalignment="center",
@@ -178,14 +178,16 @@ def main():
     ax.spines["polar"].set_visible(False)
     ax.grid(False)
     ax.legend(
-        handles=get_legend(),
-        # loc="center",
-        bbox_to_anchor=(0.45, 0.5),
-        ncol=2,
+        handles=get_legend(explanation=True),
+        # loc="upper left",
+        bbox_to_anchor=(0, 1.15),
+        # ncol=2,
         fontsize="x-large",
+        edgecolor="none",
+        facecolor="none",
         handlelength=1,
         handletextpad=0.4,
-        columnspacing=1,
+        # columnspacing=1,
     )
     fig.tight_layout()
     fig.savefig(out_filename, bbox_inches="tight")
