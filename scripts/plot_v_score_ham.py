@@ -226,7 +226,7 @@ def main():
     ax2.set_axisbelow(True)
 
     ax_symb = ax.twinx()
-    ax_symb.spines.left.set_position(("outward", 22))
+    ax_symb.spines.left.set_position(("outward", 11))
     ax_symb.spines.left.set_visible(False)
     ax_symb.spines.right.set_visible(False)
     ax_symb.spines.top.set_visible(False)
@@ -244,7 +244,7 @@ def main():
         text.set_color(ham_colors[ham_attrs[i][0]])
 
     ax_left = ax.twinx()
-    ax_left.spines.left.set_position(("outward", 50))
+    ax_left.spines.left.set_position(("outward", 42))
     ax_left.spines.left.set_visible(False)
     ax_left.spines.right.set_visible(False)
     ax_left.spines.top.set_visible(False)
