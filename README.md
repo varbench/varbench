@@ -1,5 +1,7 @@
 # Variational Benchmarks for Quantum Many-Body Problems
 
+[![Paper (v1)](https://img.shields.io/badge/paper%20%28v1%29-arXiv%3A2302.04919-B31B1B)](https://arxiv.org/abs/2302.04919)
+
 Benchmark data are presented in folders that correspond to different Hamiltonian types. For example, the folder `TFIsing` contains data for the transverse-field Ising model.
 
 Data for each specific Hamiltonian are presented in a file, whose filename describes the lattice geometry (see `lattice.md`, except for impurity models) and other parameters such as interaction strength and number of fermions.
