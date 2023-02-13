@@ -1,6 +1,6 @@
 # Variational Benchmarks for Quantum Many-Body Problems
 
-[![Paper (v1)](https://img.shields.io/badge/paper%20%28v3%29-arXiv%3A2302.04919-B31B1B)](https://arxiv.org/abs/2302.04919)
+[![Paper (v1)](https://img.shields.io/badge/paper%20%28v1%29-arXiv%3A2302.04919-B31B1B)](https://arxiv.org/abs/2302.04919)
 
 Benchmark data are presented in folders that correspond to different Hamiltonian types. For example, the folder `TFIsing` contains data for the transverse-field Ising model.
 
