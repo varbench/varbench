@@ -1,0 +1,8 @@
+matplotlib
+natsort
+numpy
+scipy
+svgpath2mpl
+svgpathtools
+tabulate
+Unidecode

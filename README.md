@@ -17,3 +17,12 @@ The file is a Markdown table, and each row shows a result from a specific numeri
 * `Data Repository`: if present, it points to the location of the data necessary to reproduce the result
 
 Note that all rows in a same file always have the same `DOF` and `Einf`, but we replicate them in every row to simplify data analysis.
+
+## Plotting
+
+The plots in the paper are presented in the folder `scripts/`. To reproduce them, run the following (on Linux with Python 3 installed):
+```sh
+cd scripts/
+pip install -r requirements.txt
+./plot_all.sh
+```
