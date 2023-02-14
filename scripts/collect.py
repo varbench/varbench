@@ -34,7 +34,7 @@ required_fields = ["energy", "sigma", "energy variance", "dof", "einf", "method"
 def _unidecode(s):
     out = unidecode(s)
     if out != s:
-        print(f"Special character detected in {s}")
+        print(f"Warning: Special character detected in {s}")
     return out
 
 

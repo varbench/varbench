@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-from pathlib import Path
-
 from matplotlib import pyplot as plt
 
 from collect import data_key, filter_energy_var, get_data, ham_types
@@ -96,7 +94,7 @@ def main():
     ax_symb.set_yticks(range(y_max))
     ax_symb.set_yticklabels(
         [lat_types[x[1]] for x in ham_attrs],
-        font=Path("icons/varbench_icons.ttf"),
+        font="VarbenchIcons",
         fontsize="small",
     )
     for i, text in enumerate(ax_symb.get_yticklabels()):

@@ -5,6 +5,7 @@ from math import log2, log10, nan
 
 import numpy as np
 from matplotlib import pyplot as plt
+from matplotlib.font_manager import fontManager
 from matplotlib.lines import Line2D
 from matplotlib.transforms import Affine2D
 from svgpath2mpl import parse_path
@@ -13,8 +14,9 @@ from tabulate import tabulate
 
 from collect import data_key, filter_energy_var, get_data
 
+fontManager.addfont("./icons/varbench_icons.ttf")
 plt.rcParams["font.family"] = "serif"
-plt.rcParams["font.serif"] = "STIX"
+plt.rcParams["font.serif"] = "STIXGeneral"
 plt.rcParams["mathtext.fontset"] = "stix"
 
 out_filename = "./v_score.pdf"
@@ -257,7 +259,7 @@ def get_path(marker):
     if marker in ["o", "o_empty"]:
         return marker
 
-    _, attributes = svg2paths(f"icons/{marker}.svg")
+    _, attributes = svg2paths(f"./icons/{marker}.svg")
     marker = parse_path(attributes[0]["d"])
     marker.vertices -= 128
     marker = marker.transformed(Affine2D().scale(1, -1))
