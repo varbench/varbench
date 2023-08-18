@@ -3,7 +3,14 @@
 from matplotlib import pyplot as plt
 
 from collect import data_key, filter_energy_var, get_data, ham_types
-from plot_v_score import get_exact_energies, get_v_score, ham_colors, scale_doubly_log
+from plot_v_score import (
+    get_exact_energies,
+    get_marker,
+    get_plot_kwargs,
+    get_v_score,
+    ham_colors,
+    scale_doubly_log,
+)
 from plot_v_score_ham import (
     get_ax_left_yticks,
     get_key,
@@ -36,23 +43,29 @@ def main():
         v_score = get_v_score(row, v_score_exact_threshold, v_score_exact_pos)
 
         if key not in v_scores or energy < energies[key]:
-            v_scores[key] = v_score
+            v_scores[key] = (ham_attr, v_score)
             energies[key] = energy
 
     ham_attrs = sorted({x[0] for x in v_scores}, key=ham_attr_key)
 
     xs = []
     ys = []
-    cs = []
-    for (ham_attr, _), v_score in v_scores.items():
+    markers = []
+    for (ham_attr, _), (orig_ham_attr, v_score) in v_scores.items():
         xs.append(v_score)
         ys.append(ham_attrs.index(ham_attr))
-        cs.append(ham_colors[ham_attr[0]])
+        markers.append(get_marker(orig_ham_attr))
 
     fig, ax = plt.subplots(figsize=(6 * 0.8, 4 * 0.8))
 
-    for x, y, c in zip(xs, ys, cs):
-        ax.scatter(scale_doubly_log(x), y, edgecolor=c, facecolor="none", linewidth=0.5)
+    for x, y, (color, marker, size) in zip(xs, ys, markers):
+        marker = "o_empty"
+        size = 6
+        ax.plot(
+            scale_doubly_log(x),
+            y,
+            **(get_plot_kwargs(color, marker, size, False) | {"markeredgewidth": 0.5})
+        )
 
     y_max = len(ham_attrs)
     for i in range(y_max // 2 + 1):
@@ -116,7 +129,8 @@ def main():
     yticks[5] -= 1
     ax_left.set_yticks(yticks)
     ax_left.set_yticklabels(
-        ["TFIM", "Heisenberg", "$J_1$-$J_2$", "$t$-$V$", "Hubbard", "Impurity"],
+        ["TFIM", "Heisenberg", "$J_1$-$J_2$", "$t\\,$-$\\!V$", "Hubbard", "Impurity"],
+        fontsize="small",
         horizontalalignment="center",
         rotation=90,
         rotation_mode="anchor",

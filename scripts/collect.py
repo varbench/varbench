@@ -170,9 +170,11 @@ def get_data():
                 continue
             ham_param = file.name.replace(".md", "")
 
-            # Filter out Hubbard data with strange U values
+            # Filter out Hubbard data with inexact U values
+            # They are from a log-scale scanning of U, but the precision of U is
+            # only 1e-8, and the precision of DMRG can be much lower than 1e-8
             if re.compile(r"[^.]+\.\d{4,}").fullmatch(ham_param):
-                print(f"Info: Skip strange U value: {(ham_type, ham_param)}")
+                print(f"Info: Skip inexact U value: {(ham_type, ham_param)}")
                 continue
 
             file_path = os.path.join(root, _dir.name, file.name)
