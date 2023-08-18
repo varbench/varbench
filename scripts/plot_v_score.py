@@ -5,7 +5,7 @@ from math import log2, log10, nan
 
 import numpy as np
 from matplotlib import pyplot as plt
-from matplotlib.font_manager import fontManager
+from matplotlib.font_manager import FontEntry, fontManager
 from matplotlib.lines import Line2D
 from matplotlib.transforms import Affine2D
 from svgpath2mpl import parse_path
@@ -14,10 +14,20 @@ from tabulate import tabulate
 
 from collect import data_key, filter_energy_var, get_data
 
+fontManager.addfont("./fonts/free_sans.ttf")
+fontManager.ttflist.append(
+    FontEntry(fname="./fonts/free_sans_oblique.ttf", name="FreeSans Oblique")
+)
 fontManager.addfont("./icons/varbench_icons.ttf")
-plt.rcParams["font.family"] = "serif"
-plt.rcParams["font.serif"] = "STIXGeneral"
-plt.rcParams["mathtext.fontset"] = "stix"
+# print([f.name for f in fontManager.ttflist])
+
+# plt.rcParams["font.family"] = "serif"
+# plt.rcParams["font.serif"] = "STIXGeneral"
+# plt.rcParams["mathtext.fontset"] = "stix"
+plt.rcParams["font.family"] = "sans-serif"
+plt.rcParams["font.sans-serif"] = "FreeSans"
+plt.rcParams["mathtext.fontset"] = "custom"
+plt.rcParams["mathtext.it"] = "FreeSans Oblique"
 
 out_filename = "./v_score.pdf"
 
@@ -361,7 +371,7 @@ def get_legend(*, skip=(), impurity=True, explanation=False):
             _Line2D("TFIM  ($N$_BC_$\\Gamma$)", "TFIsing"),
             _Line2D("Heisenberg  ($N$_BC)", "Heisenberg"),
             _Line2D("$J_1$-$J_2$  ($N$_BC_$J_2$)", "J1J2"),
-            _Line2D("$t$-$V$  ($N_\\mathrm{s}$_BC_$N_\\mathrm{f}$_$V$)", "tV"),
+            _Line2D("$t\\,$-$\\!V$  ($N_\\mathrm{s}$_BC_$N_\\mathrm{f}$_$V$)", "tV"),
             _Line2D("Hubbard  ($N_\\mathrm{s}$_BC_$N_↑$_$U$)", "Hubbard"),
             _Line2D("Impurity  (model_$N_\\mathrm{b}$)", "Impurity"),
         ]
@@ -370,7 +380,7 @@ def get_legend(*, skip=(), impurity=True, explanation=False):
             _Line2D("TFIM", "TFIsing"),
             _Line2D("Heisenberg", "Heisenberg"),
             _Line2D("$J_1$-$J_2$", "J1J2"),
-            _Line2D("$t$-$V$", "tV"),
+            _Line2D("$t\\,$-$\\!V$", "tV"),
             _Line2D("Hubbard", "Hubbard"),
             _Line2D("Impurity", "Impurity"),
         ]

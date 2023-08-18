@@ -122,7 +122,7 @@ def main():
     xs_pqc = np.log([x[0] for x in data_pqc])
 
     fig, ax1 = plt.subplots(figsize=(6 * 0.8, 4 * 0.8))
-    ax2 = ax1.inset_axes([0.6, 0.1, 0.35, 0.35])
+    ax2 = ax1.inset_axes([0.62, 0.1, 0.35, 0.35])
 
     v_min, v_max = get_padded_range(xs)
     ax1.plot(
@@ -176,6 +176,7 @@ def main():
     ax1.set_yscale("log")
     ax2.set_yscale("log")
     ax2.set_ylim([3e-6, 3e-3])
+    ax1.minorticks_off()
     ax2.minorticks_off()
     ax1.grid(color="0.8", linestyle="--", zorder=0.4)
     ax2.grid(color="0.8", linestyle="--", zorder=0.4)
@@ -184,7 +185,7 @@ def main():
         ncol=2,
         fontsize="small",
         handletextpad=0.4,
-        columnspacing=1,
+        columnspacing=0.2,
     )
     fig.tight_layout()
     fig.savefig(out_filename, bbox_inches="tight")
