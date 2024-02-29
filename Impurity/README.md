@@ -53,3 +53,38 @@ The names of the data files follow the convention `model_Nb.md`
 
 * `model` is the name of the impurity model
 * `Nb` is the number of bath sites per spin-orbital
+
+# Hamiltonian
+The impurity Hamitonian parameters are store in `HamParams` folder. The names of the Hamiltonian follow the same convention of `model_Nb.h5`. The following example python script describes their data structure
+```python 
+import h5py
+
+file_name = "TB-DMFT-SOC_19.h5"
+with h5py.File(file_name, "r") as file:
+    # Retrieve the local single-particle Hamiltonian on the impurity
+    e0 = file['e0']
+    # Retrieve the bath parameters
+    bath = file['bath']
+
+    # For non spin orbit coupling case, the spin_orb_key is ["up", "down"]
+    # For spin orbit coupling case, the spin_orb_key is ["ud_0", "ud_1"]
+    spin_orb_key = "ud_1"
+
+    # Retrieve the on-site single particle Hamiltonian on the impurity
+    # The shape is complex (n_orb, n_orb)
+    hloc = e0['hloc'][spin_orb_key][()][:,:,0] + 1j * e0['hloc'][spin_orb_key][()][:,:,1]
+
+    # Define the impurity and bath indices
+    i_imp = 0
+    i_bath = 8
+
+    # Retrieve the hopping matrix between the i_imp impurity and the ibath bath
+    # The shape is complex (n_orb)
+    V = bath['bath'][spin_orb_key][f"{i_imp}"][f"{i_bath}"]["V"][()][:,0] + 1j * bath['bath'][spin_orb_key][f"{i_imp}"][f"{i_bath}"]["V"][()][:,1]
+
+
+    # Retrieve the on-site energy of the i_bath bath belonging to the i_imp impurity
+    # This is a real scalar value
+    eps = bath['bath'][spin_orb_key][f"{i_imp}"][f"{i_bath}"]["eps"][()]
+
+```
