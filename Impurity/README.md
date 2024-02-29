@@ -55,7 +55,7 @@ The names of the data files follow the convention `model_Nb.md`
 * `Nb` is the number of bath sites per spin-orbital
 
 # Hamiltonian
-The impurity Hamitonian parameters are store in `HamParams` folder. The names of the Hamiltonian follow the same convention of `model_Nb.h5`. The following example python script describes their data structure
+The impurity Hamitonian parameters are stored in `HamParams` folder. The names of the Hamiltonian follow the same convention of `model_Nb.h5`. The following example python script describes their data structure
 ```python 
 import h5py
 
