@@ -7,3 +7,5 @@
 | -196.55931995563643 |         | 16.657353288515882 | 100 | 0    | DMRG (bond dimension = 1024)                                 |                 |
 | -190.8007           | 0.0084  | 71.58155           | 100 | 0    | RBM (alpha = 1)                                              |                 |
 | -189.5607           | 0.0084  | 71.68267           | 100 | 0    | Jastrow baseline                                             |                 |
+| -198.32             | 0.008 |                 | 100 | 0    | RBM + symmetry(spin flip, translational, spatial)                        |                 |
+| -198.72             |  0.16     |                 | 100 | 0    | RBM + symmetry(spin flip, translational, spatial) + Lanczos(1 step)                      |                 |
