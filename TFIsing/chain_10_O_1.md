@@ -2,8 +2,8 @@
 |---------------------|--------|-----------------------|-----|------|----------------------------|-----------|
 | -12.381489999654734 |        |                       | 10  | 0    | Exact Diagonalization      | TODO: own code (ED) |
 | -12.381489999654796 |        | 4.8e-13               | 10  | 0    | DMRG (bond dimension = 13) | TODO: own code (DMRG) |
-| -12.381718          | 2.2e-5 | 0.00049440652         | 10  | 0    | RBM (alpha = 1)            | TODO: own code (baseline RBM) |
-| -12.37844           | 1.9e-4 | 0.03606162            | 10  | 0    | Jastrow baseline           | TODO: own code (baseline Jastrow) |
+| -12.381718          | 2.2e-5 | 0.00049440652         | 10  | 0    | RBM (alpha = 1)            | TODO: own code (RBM) |
+| -12.37844           | 1.9e-4 | 0.03606162            | 10  | 0    | Jastrow baseline           | TODO: own code (Jastrow) |
 | -12.369880335524275 |        | 0.02617234935672741   | 10  | 0    | VQE HV (d = 8)             | TODO: ask Guglielmo |
 | -12.373307625923212 |        | 0.019679531982376375  | 10  | 0    | VQE HV (d = 12)            | TODO: ask Guglielmo |
 | -12.38012453981509  |        | 0.005117243360558632  | 10  | 0    | VQE HV (d = 16)            | TODO: ask Guglielmo |
