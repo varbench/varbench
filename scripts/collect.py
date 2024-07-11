@@ -27,7 +27,15 @@ known_tags = [
     "qmc",
     "pqc",
 ]
-required_fields = ["energy", "sigma", "energy variance", "dof", "einf", "method"]
+required_fields = [
+    "energy",
+    "sigma",
+    "energy variance",
+    "dof",
+    "einf",
+    "method",
+    "reference",
+]
 
 
 # Sometimes there are special Unicode characters, so we normalize them
@@ -51,14 +59,14 @@ def parse_float(s):
         return nan
 
 
-def find_tag(s, max_width=60):
-    s = _unidecode(s)
-
+def shorten(s, max_width=60):
     if len(s) > max_width:
-        s_short = s[: max_width - 3] + "..."
+        return s[: max_width - 3] + "..."
     else:
-        s_short = s
+        return s
 
+
+def find_tag(s):
     s = s.lower()
     if any(x in s for x in ["exact diag", "exact solution", "quspin"]):
         tag = "ed"
@@ -103,7 +111,7 @@ def find_tag(s, max_width=60):
     if tag:
         assert tag in known_tags
 
-    return tag, s_short
+    return tag
 
 
 def parse_data(data, file_path, ham_attr):
@@ -118,9 +126,16 @@ def parse_data(data, file_path, ham_attr):
         def warn(msg):
             print(f"Warning: {msg}: {ham_attr + cols}")
 
-        tag, method = find_tag(cols[field_indices["method"]])
+        method = _unidecode(cols[field_indices["method"]])
+
+        tag = find_tag(method)
         if tag in ["fn", "qmc"]:
             continue
+
+        method = shorten(method)
+
+        # reference = _unidecode(cols[field_indices["reference"]])
+        # method = shorten(reference, max_width=120)
 
         energy = parse_float(cols[field_indices["energy"]])
         if isnan(energy):
