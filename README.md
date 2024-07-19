@@ -15,7 +15,7 @@ The file is a Markdown table, and each row shows a result from a specific numeri
 * `DOF`: number of degrees of freedom. For spins and spinless fermions it is the number of particles, and for spinful fermions it is `Nup + Ndown`
 * `Einf`: zero point of energy, usually defined as the energy expectation at infinite temperature
 * `Method`: a short description of the method
-* `Reference`: the literature reference and the code repository to reproduce the result
+* `Reference`: the literature reference and the code repository to reproduce the result. Note that some links point to the latest version of [methods](https://github.com/varbench/methods) repository on GitHub. To fully reproduce the results in the paper, please use the archived version of methods repository on Zenodo instead
 
 Note that all rows in a same file always have the same `DOF` and `Einf`, but we replicate them in every row to simplify data analysis.
 
