@@ -4,4 +4,4 @@
 | -10.23942965693701979 | 1.516009651130502942e-04 | 1.015682635471489362e-02 | 5   | 2.666666666666667 | VMC Determinant Slater-Jastrow (RBM) Ansatz                  | TODO: ask Imelda |
 | -10.23996190287110863 | 1.403183703273309013e-04 | 7.349369269982601940e-03 | 5   | 2.666666666666667 | VMC Determinant Slater-Jastrow (RBM) Ansatz with K=0 projections (symmetric wrt translations) | TODO: ask Imelda |
 | -10.24062118379990594 | 4.434055779122285710e-05 | 9.009253641658748757e-04 | 5   | 2.666666666666667 | VMC Determinant Slater-Backflow-Jastrow (RBM) Ansatz with K=0 projections (symmetric wrt translations) | TODO: ask Imelda |
-| -10.240650492312072   |                          | 5.684341886080802e-14    | 5   | 2.666666666666667 | DMRG (maxbonddim = 74)                                       | [code](https://github.com/https://github.com/varbench/methods/blob/main/scripts/tV/square_16_P_5_1/dmrg.sh) |
+| -10.240650492312072   |                          | 5.684341886080802e-14    | 5   | 2.666666666666667 | DMRG (maxbonddim = 74)                                       | [code](https://github.com/varbench/methods/blob/main/scripts/tV/square_16_P_5_1/dmrg.sh) |
