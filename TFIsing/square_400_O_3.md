@@ -1,6 +1,6 @@
 | Energy              | Sigma   | Energy Variance | DOF | Einf | Method                               | Reference |
 |---------------------|---------|-----------------|-----|------|--------------------------------------|-----------|
-| -1272.5724160956197 |         | 6.2083850603085 | 400 | 0    | DMRG (bond dimension = 1024)         | TODO: own code (DMRG) |
+| -1272.5724160956197 |         | 6.2083850603085 | 400 | 0    | DMRG (bond dimension = 1024)         | [code](https://github.com/https://github.com/varbench/methods/blob/main/scripts/TFIsing/square_400_O_3/dmrg.sh) |
 | -1266.7258          | 0.0098  | 98.838660       | 400 | 0    | RBM (alpha = 1)                      | TODO: own code (RBM) |
 | -1272.6319          | 0.0014  | 2.0295256       | 400 | 0    | Jastrow baseline                     | TODO: own code (Jastrow) |
 | -1272.788(8)        |         | ?               | 400 | 0    | DMRG on TPU (bond dimension = 32768) | [paper](https://journals.aps.org/prxquantum/abstract/10.1103/PRXQuantum.4.010317) |
