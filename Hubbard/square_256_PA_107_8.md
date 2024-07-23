@@ -1,4 +1,4 @@
-| Energy      | Sigma   | Energy Variance | DOF | Einf      | S(qmax) | qmax    | Method                                                       | Data Repository                                              |
-|-------------|---------|-----------------|-----|-----------|---------|---------|--------------------------------------------------------------|--------------------------------------------------------------|
-| -204.48(7)  | 0.0175  | 49.7(16)        | 214 | 357.78125 |         | (pi,pi) | mVMC with SU(2) and momentum projections (gamma point) + RBM + Lanczos, (U=8) , alpha = 1 |                                                              |
-| -210.772224 | .007680 | 1.57(20)        | 214 | 357.78125 |         |         | VAFQMC stripe length 8 APBC along the stripe                 | git-scm.sissa.it:TurboLattice/HST_AAD/example/16x16/U8/stripel8doping1su8m5/b1.3n/pbc |
+| Energy      | Sigma   | Energy Variance | DOF | Einf      | S(qmax) | qmax    | Method                                                       | Reference |
+|-------------|---------|-----------------|-----|-----------|---------|---------|--------------------------------------------------------------|-----------|
+| -204.48(7)  | 0.0175  | 49.7(16)        | 214 | 357.78125 |         | (pi,pi) | mVMC with SU(2) and momentum projections (gamma point) + RBM + Lanczos, (U=8), alpha = 1 | TODO: ask Michael |
+| -210.772224 | .007680 | 1.57(20)        | 214 | 357.78125 |         |         | VAFQMC stripe length 8 APBC along the stripe                 | TODO: This is from Sorella and this is not public git-scm.sissa.it:TurboLattice/HST_AAD/example/16x16/U8/stripel8doping1su8m5/b1.3n/pbc |
