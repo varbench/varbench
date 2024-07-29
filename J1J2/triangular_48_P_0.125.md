@@ -1,3 +1,50 @@
-| Energy         | Sigma    | Energy Variance | DOF | Einf | Method                | Reference |
-|----------------|----------|-----------------|-----|------|-----------------------|-----------|
-| -99.3243731393 | 3.24e-13 |                 | 48  | 0    | Exact Diagonalization | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| Energy         | Sigma    | Energy Variance | DOF | Einf | Method                               | Reference |
+|----------------|----------|-----------------|-----|------|--------------------------------------|-----------|
+| -96.4643112641 | 4.21e-05 |                 | 48  | 0    | Exact Diagonalization 0.C1.A      -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -97.0283840497 | 5.29e-05 |                 | 48  | 0    | Exact Diagonalization 0.C1.A       1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -94.6001195408 | 3.73e-13 |                 | 48  | 0    | Exact Diagonalization Gamma.D6.A1 -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -99.3243731393 | 3.24e-13 |                 | 48  | 0    | Exact Diagonalization Gamma.D6.A1  1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -93.9964710035 | 3.28e-13 |                 | 48  | 0    | Exact Diagonalization Gamma.D6.A2 -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -97.5148828301 | 2.69e-13 |                 | 48  | 0    | Exact Diagonalization Gamma.D6.A2  1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.9141085620 | 3.57e-13 |                 | 48  | 0    | Exact Diagonalization Gamma.D6.B1 -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -94.3993360171 | 3.12e-13 |                 | 48  | 0    | Exact Diagonalization Gamma.D6.B1  1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -94.8231658150 | 3.29e-05 |                 | 48  | 0    | Exact Diagonalization Gamma.D6.B2 -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -94.1370349394 | 2.18e-11 |                 | 48  | 0    | Exact Diagonalization Gamma.D6.B2  1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.5143890817 | 3.85e-13 |                 | 48  | 0    | Exact Diagonalization Gamma.D6.E1 -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -94.1191636896 | 2.92e-04 |                 | 48  | 0    | Exact Diagonalization Gamma.D6.E1  1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -94.6108993244 | 3.24e-13 |                 | 48  | 0    | Exact Diagonalization Gamma.D6.E2 -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -98.7034711151 | 5.56e-06 |                 | 48  | 0    | Exact Diagonalization Gamma.D6.E2  1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -97.4765394893 | 4.43e-08 |                 | 48  | 0    | Exact Diagonalization K.D3.A1     -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -95.4097231118 | 3.23e-13 |                 | 48  | 0    | Exact Diagonalization K.D3.A1      1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -95.0029307855 | 6.16e-04 |                 | 48  | 0    | Exact Diagonalization K.D3.A2     -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -95.0063059240 | 3.43e-13 |                 | 48  | 0    | Exact Diagonalization K.D3.A2      1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.4257227302 | 1.46e-04 |                 | 48  | 0    | Exact Diagonalization K.D3.E      -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.0123967672 | 3.64e-12 |                 | 48  | 0    | Exact Diagonalization K.D3.E       1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -97.1935450193 | 3.72e-13 |                 | 48  | 0    | Exact Diagonalization M.D2.A1     -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -95.8954883360 | 3.67e-13 |                 | 48  | 0    | Exact Diagonalization M.D2.A1      1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.4814676427 | 3.38e-13 |                 | 48  | 0    | Exact Diagonalization M.D2.A2     -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -95.1104612519 | 3.36e-13 |                 | 48  | 0    | Exact Diagonalization M.D2.A2      1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -94.7108761422 | 4.60e-13 |                 | 48  | 0    | Exact Diagonalization M.D2.B1     -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.8417378948 | 3.61e-13 |                 | 48  | 0    | Exact Diagonalization M.D2.B1      1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -95.3191248118 | 3.50e-13 |                 | 48  | 0    | Exact Diagonalization M.D2.B2     -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -97.2186312049 | 3.74e-13 |                 | 48  | 0    | Exact Diagonalization M.D2.B2      1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.1430463315 | 3.39e-13 |                 | 48  | 0    | Exact Diagonalization X0.D1.A     -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.3236008361 | 3.67e-13 |                 | 48  | 0    | Exact Diagonalization X0.D1.A      1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -95.9591878447 | 3.42e-13 |                 | 48  | 0    | Exact Diagonalization X0.D1.B     -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.0665487981 | 9.05e-13 |                 | 48  | 0    | Exact Diagonalization X0.D1.B      1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.4289679218 | 6.99e-13 |                 | 48  | 0    | Exact Diagonalization X1.D1.A     -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -97.6530994904 | 3.41e-13 |                 | 48  | 0    | Exact Diagonalization X1.D1.A      1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -95.5777670451 | 3.50e-13 |                 | 48  | 0    | Exact Diagonalization X1.D1.B     -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.6555615785 | 3.12e-13 |                 | 48  | 0    | Exact Diagonalization X1.D1.B      1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.4368007071 | 3.51e-06 |                 | 48  | 0    | Exact Diagonalization X2.D1.A     -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -97.8344433850 | 3.94e-06 |                 | 48  | 0    | Exact Diagonalization X2.D1.A      1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -95.6379830325 | 3.33e-06 |                 | 48  | 0    | Exact Diagonalization X2.D1.B     -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.7229598620 | 3.38e-06 |                 | 48  | 0    | Exact Diagonalization X2.D1.B      1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -95.8701895419 | 1.36e-05 |                 | 48  | 0    | Exact Diagonalization Y.D1.A      -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.5822631024 | 5.08e-05 |                 | 48  | 0    | Exact Diagonalization Y.D1.A       1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -95.7758437002 | 3.07e-04 |                 | 48  | 0    | Exact Diagonalization Y.D1.B      -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.9477428863 | 1.68e-04 |                 | 48  | 0    | Exact Diagonalization Y.D1.B       1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -97.0958765689 | 2.40e-04 |                 | 48  | 0    | Exact Diagonalization Z.D1.A      -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.2907393386 | 9.70e-05 |                 | 48  | 0    | Exact Diagonalization Z.D1.A       1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -95.7222960611 | 8.25e-04 |                 | 48  | 0    | Exact Diagonalization Z.D1.B      -1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
+| -96.3509561853 | 6.22e-06 |                 | 48  | 0    | Exact Diagonalization Z.D1.B       1 | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.14.021010) |
