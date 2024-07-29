@@ -1,6 +1,6 @@
 | Energy                | Sigma                    | Energy Variance          | DOF | Einf               | Method                                                       | Reference |
 |-----------------------|--------------------------|--------------------------|-----|--------------------|--------------------------------------------------------------|-----------|
-| -27.340544159534836   |                          |                          | 13  | 0.8914285714285715 | Exact diagonalization                                        | TODO: own code (ED) |
+| -27.340544159534836   |                          |                          | 13  | 0.8914285714285715 | Exact diagonalization                                        | [code](https://github.com/varbench/methods/blob/main/scripts/tV/square_36_P_13_0.1/ed_lattice_symmetries.sh) |
 | -27.34055285498830301 | 5.167570104402214540e-05 | 1.021123460754086199e-04 | 13  | 0.8914285714285715 | VMC Determinant Slater-Jastrow (RBM) Ansatz with K=0 projections (symmetric wrt translations) | TODO: ask Imelda |
 | -27.340544159534552   | 3.140774396539580678e-06 | 3.615214994693033564e-06 | 13  | 0.8914285714285715 | VMC Determinant Slater-Backflow-Jastrow (RBM) Ansatz with K=0 projections (symmetric wrt translations) | TODO: ask Imelda |
 | -27.340535848504246   |                          | 0.000387000677501812     | 13  | 0.8914285714285715 | DMRG (maxbonddim = 4096)                                     | [code](https://github.com/varbench/methods/blob/main/scripts/tV/square_36_P_13_0.1/dmrg.sh) |
