@@ -6,4 +6,4 @@
 | -198.239            | 0.017   | 4.671              | 100 | 0    | RNN + translational symmetry                                 | TODO: own code (RNN) |
 | -196.55931995563643 |         | 16.657353288515882 | 100 | 0    | DMRG (bond dimension = 1024)                                 | [code](https://github.com/varbench/methods/blob/main/scripts/J1J2/square_100_P_0.5/dmrg.sh) |
 | -190.8007           | 0.0084  | 71.58155           | 100 | 0    | RBM (alpha = 1)                                              | TODO: own code (RBM) |
-| -189.5607           | 0.0084  | 71.68267           | 100 | 0    | Jastrow baseline                                             | TODO: own code (Jastrow) |
+| -189.5607           | 0.0084  | 71.68267           | 100 | 0    | Jastrow baseline                                             | [code](https://github.com/varbench/methods/blob/main/scripts/J1J2/square_100_P_0.5/vmc_jastrow.sh) |

@@ -3,7 +3,7 @@
 | -12.381489999654734 |        |                       | 10  | 0    | Exact Diagonalization      | [code](https://github.com/varbench/methods/blob/main/scripts/TFIsing/chain_10_O_1/ed_netket.sh) |
 | -12.381489999654796 |        | 4.8e-13               | 10  | 0    | DMRG (bond dimension = 13) | [code](https://github.com/varbench/methods/blob/main/scripts/TFIsing/chain_10_O_1/dmrg.sh) |
 | -12.381718          | 2.2e-5 | 0.00049440652         | 10  | 0    | RBM (alpha = 1)            | TODO: own code (RBM) |
-| -12.37844           | 1.9e-4 | 0.03606162            | 10  | 0    | Jastrow baseline           | TODO: own code (Jastrow) |
+| -12.37844           | 1.9e-4 | 0.03606162            | 10  | 0    | Jastrow baseline           | [code](https://github.com/varbench/methods/blob/main/scripts/TFIsing/chain_10_O_1/vmc_jastrow.sh) |
 | -12.369880335524275 |        | 0.02617234935672741   | 10  | 0    | VQE HV (d = 8)             | TODO: ask Guglielmo |
 | -12.373307625923212 |        | 0.019679531982376375  | 10  | 0    | VQE HV (d = 12)            | TODO: ask Guglielmo |
 | -12.38012453981509  |        | 0.005117243360558632  | 10  | 0    | VQE HV (d = 16)            | TODO: ask Guglielmo |
