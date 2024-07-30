@@ -9,5 +9,5 @@
 | -250.3460    | 0.0041  | 16.83691        | 100 | 0    | 1D MPS-RNN (bond dimension = 40)                             | [paper](https://journals.aps.org/prresearch/abstract/10.1103/PhysRevResearch.5.L032001) [code](https://github.com/cqsl/mps-rnn) |
 | -251.0788    | 0.0022  | 4.928276        | 100 | 0    | 2D MPS-RNN (bond dimension = 40)                             | [paper](https://journals.aps.org/prresearch/abstract/10.1103/PhysRevResearch.5.L032001) [code](https://github.com/cqsl/mps-rnn) |
 | -251.4112    | 0.0015  | 2.289447        | 100 | 0    | Tensor-RNN (bond dimension = 40)                             | [paper](https://journals.aps.org/prresearch/abstract/10.1103/PhysRevResearch.5.L032001) [code](https://github.com/cqsl/mps-rnn) |
-| -249.1033    | 0.0051  | 26.13060        | 100 | 0    | RBM (alpha = 1)                                              | TODO: own code (RBM) |
+| -249.1033    | 0.0051  | 26.13060        | 100 | 0    | RBM (alpha = 1)                                              | [code](https://github.com/varbench/methods/blob/main/scripts/Heisenberg/square_100_O/vmc_rbm.sh) |
 | -248.1073    | 0.0056  | 31.73600        | 100 | 0    | Jastrow baseline                                             | [code](https://github.com/varbench/methods/blob/main/scripts/Heisenberg/square_100_O/vmc_jastrow.sh) |
