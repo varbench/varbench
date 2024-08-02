@@ -1,4 +1,4 @@
 | Energy              | Sigma | Energy Variance       | DOF | Einf                | Method                                                       | Reference |
 |---------------------|-------|-----------------------|-----|---------------------|--------------------------------------------------------------|-----------|
-| -13.889324869492123 |       | 6.536993168992922e-13 | 8   | -11.053735474287619 | DMRG (bond dimension 100) using fork tensor product states with U(1) symmetries for charge and spin sector | TODO: ask Xiaodong |
-| -13.889324869492144 |       |                       | 8   | -11.053735474287619 | Exact diagonalization                                        | TODO: ask Xiaodong |
+| -13.889324869492123 |       | 6.536993168992922e-13 | 8   | -11.053735474287619 | DMRG (bond dimension 100) using fork tensor product states with U(1) symmetries for charge and spin sector | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.7.031013) [code](https://github.com/varbench/methods/blob/main/scripts/Impurity/SB-DMFT-MT-AHF_9.py) |
+| -13.889324869492144 |       |                       | 8   | -11.053735474287619 | Exact diagonalization                                        | [paper](https://journals.aps.org/prx/abstract/10.1103/PhysRevX.7.031013) [code](https://github.com/varbench/methods/blob/main/scripts/Impurity/SB-DMFT-MT-AHF_9.py) |
