@@ -54,6 +54,11 @@ The names of the data files follow the convention `model_Nb.md`
 * `model` is the name of the impurity model
 * `Nb` is the number of bath sites per spin-orbital
 
+# Codes 
+
+The scripts used to obtain these results are available in [scripts](https://github.com/varbench/methods/tree/main/scripts/Impurity), and details on installing the **forkTPS** library can be found in [programs](https://github.com/varbench/methods/tree/main/programs/Impurity). 
+
+
 # Hamiltonian
 The impurity Hamitonian parameters are stored in `HamParams` folder. The names of the Hamiltonian follow the same convention of `model_Nb.h5`. The following example python script describes their data structure
 ```python 
