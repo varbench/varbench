@@ -2,4 +2,4 @@
 |-----------------------|---------|-----------------|-----|-----------|--------------------------------------------------------------|-----------|
 | -17.60373155517908828 |         |                 | 10  | 12.097875 | Exact diagonalization                                        | [code](https://github.com/varbench/methods/blob/main/scripts/Hubbard/square_16_P_5_7.74264/ed_lattice_symmetries.sh) |
 | -17.60200             | 0.00001 | 0.037(4)        | 10  | 12.097875 | VMC Hidden Fermion Determinant State Ansatz (N_hidden = 10. Single hidden layer fully connected net with alpha = 64). C4 and K = 0 projections | [paper](https://www.pnas.org/doi/full/10.1073/pnas.2122059119)  |
-| -17.6037303           |         | 3.5781e-6       | 10  | 12.097875 | DMRG (MaxBondDim = 7000)                                     | TODO: ask Max |
+| -17.6037303           |         | 3.5781e-6       | 10  | 12.097875 | DMRG (MaxBondDim = 7000)                                     | [code](https://github.com/varbench/methods/blob/main/programs/dmrg_itensors_hubbard/square_16_P_5_7.74264.jl) |
