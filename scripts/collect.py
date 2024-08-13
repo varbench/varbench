@@ -95,7 +95,7 @@ def find_tag(s):
     elif "vafqmc" in s:
         tag = "vafqmc"
     elif "qmc" in s:
-        if s == "qmc (phys. rev. b 90, 064425)":
+        if s == "qmc":
             print("Info: Classify as exact QMC:", s)
             # TODO: Currently this only matches QMC for Heisenberg square_10_OO_100,
             # which is accurate enough to be considered exact

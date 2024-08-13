@@ -81,10 +81,12 @@ def get_exact_energies(data):
             ham_attr = row[:2]
             if ham_attr in out:
                 print(f"Warning: Duplicate exact result: {ham_attr}")
-                continue
-
-            energy = row[3]
-            out[ham_attr] = (energy, tag)
+                if energy > row[3]:
+                    energy = row[3]
+                    out[ham_attr] = (energy, tag)
+            else:
+                energy = row[3]
+                out[ham_attr] = (energy, tag)
     return out
 
 
