@@ -1,5 +1,5 @@
 | Energy     | Sigma   | Energy Variance | DOF | Einf    | S(qmax)    | qmax        | Method                                                       | Reference |
 |------------|---------|-----------------|-----|---------|------------|-------------|--------------------------------------------------------------|-----------|
-| -72.344(4) | 3.31e-4 | 0.59(2)         | 50  | 39.0625 | 0.00494(1) | (3*pi/4,pi) | mVMC with SU(2) and momentum projections (gamma point) + RBM + Lanczos, (U=4), alpha = 8 with 1x1 RBM subspace | TODO: ask Michael |
+| -72.344(4) | 3.31e-4 | 0.59(2)         | 50  | 39.0625 | 0.00494(1) | (3*pi/4,pi) | mVMC with SU(2) and momentum projections (gamma point) + RBM + Lanczos, (U=4), alpha = 8 with 1x1 RBM subspace | [code](https://github.com/varbench/methods/blob/main/scripts/Hubbard/square_64_P_25_4/mVMC/mVMC.sh) |
 | -72.11732  | 8.9e-04 | 1.43            | 50  | 39.0625 |            |             | VMC with uniform pairing (+Jastrow and backflow)             | [code](https://github.com/varbench/methods/blob/main/scripts/Hubbard/square_64_P_25_4/VMC-uniform/vmc_hubbard.sh) |
 | -72.2174   | 6e-04   |                 | 50  | 39.0625 |            |             | FN on the state above                                        | [code](https://github.com/varbench/methods/blob/main/scripts/Hubbard/square_64_P_25_4/FN-uniform/fn_hubbard.sh) |
