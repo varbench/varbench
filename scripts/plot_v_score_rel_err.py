@@ -49,13 +49,7 @@ def main():
 
         method = row[2]
         # Skip some J2 values to make the plot not too crowded
-        if ham_type == "TFIsing":
-            if "VQE" in method and method not in [
-                "VQE HV (d = 26)",
-                "VQE R-CX (d = 10)",
-            ]:
-                continue
-        elif ham_type == "J1J2":
+        if ham_type == "J1J2":
             J2 = float(get_extra_param(ham_param))
             if J2 not in [0.2, 0.5, 0.55, 0.8, 1]:
                 continue
